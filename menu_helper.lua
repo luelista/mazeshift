@@ -60,7 +60,7 @@ return {
         elseif key == "down" then
            self.curmenuitem = self.curmenuitem + 1
            if self.curmenuitem > #self.menuitems then self.curmenuitem = 1 end
-        elseif key == "return" then
+        elseif key == "return" or key == " " then
            self.menuitems[self.curmenuitem]:a(self.menuitems[self.curmenuitem])
         end
 			end

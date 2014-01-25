@@ -56,7 +56,7 @@ end
 function mainmenu_old:keypressed(key)
    mainmenu_old.menu:keypressed(key)
    if key == "q" then
-      mainmenu_old:onMenuItem("UIT GAME")
+      love.event.quit()
    end
 end
 
