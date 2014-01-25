@@ -7,7 +7,7 @@ mainmenu_old = {}
 function mainmenu_old:enter()
    mainmenu_old.menu = MenuHelper.new()
    mainmenu_old.menu.menutop = 120
-   mainmenu_old.menu.menuheight = 30
+   mainmenu_old.menu.menuheight = 30   mainmenu_old.menu.menuthreshold = 10
    mainmenu_old.menu:add("P L A Y", function() Gamestate.switch(labyrinth, 1)  end)
    mainmenu_old.menu:add("LEVELS", function() Gamestate.switch(mainmenu)  end)
    mainmenu_old.menu:add("MUSIC: ON", toggleBackgroundMusic)
@@ -28,7 +28,7 @@ function mainmenu_old:draw()
    love.graphics.circle( "fill", canvasWidth/3*2, canvasHeight/3*2, canvasWidth/8, canvasHeight/8)
 
 
-   love.graphics.setColor(255,255,255);
+   love.graphics.setColor(255,255,255)
    love.graphics.setFont(fntTitle)
    love.graphics.print("Welcome to MAZE SHIFT !", 100, 50)
    
