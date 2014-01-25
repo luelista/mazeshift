@@ -28,10 +28,10 @@ function mainmenu:enter()
   addMenuElement(str,fromCenter(fntTitle:getWidth(str)),20,fntTitle:getWidth(str),fntTitle:getHeight(str),fntTitle)
 
   str="Main Menu"
-  addMenuElement(str,fromCenter(fntDefault:getWidth(str)),55,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,1)
+  addMenuElement(str,fromCenter(fntDefault:getWidth(str)),55,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
 
   str="Start"
-  addMenuElement(str,fromCenter(fntDefault:getWidth(str)),100,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
+  addMenuElement(str,fromCenter(fntDefault:getWidth(str)),100,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,1)
   
   str="Levels"
   addMenuElement(str,fromCenter(fntDefault:getWidth(str)),180,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
