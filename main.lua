@@ -12,6 +12,12 @@ function love.load()
    imgCherry = love.graphics.newImage("cherry.png")
    imgStar = love.graphics.newImage("star.png")
    
+   sndBackgroundmusic = love.audio.newSource("Silly Fun.mp3")
+   --sndBackgroundmusic:play()
+   sndBackgroundmusic:setVolume(0.5)
+
+   sndCredit = love.audio.newSource("tada.wav", "static")
+   
    CP = 1
    ScaleX = 10
    ScaleY = 10
@@ -52,6 +58,9 @@ function refreshDarkener()
       --love.graphics.circle("fill", players[pl].x, players[pl].y, 100)
       local p = players[pl]
       love.graphics.arc("fill", (p.tx+1)*ScaleX, (p.ty+1)*ScaleY, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
+      p.stencil = function()
+         love.graphics.arc("fill", (p.tx+1)*ScaleX, (p.ty+1)*ScaleY, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
+      end
    end
    love.graphics.setCanvas()
 end
@@ -91,9 +100,19 @@ function love.draw()
 
    love.graphics.setColor(255,255,255,255)
    love.graphics.draw(mapcanvas)
+
+
+   for i = 1, #players do
+      local pl = players[i]
+      love.graphics.setStencil(pl.stencil)
+      love.graphics.draw(pl.objectcanvas)
+      love.graphics.setStencil()
+   end
+   
+
    love.graphics.draw(darkener)
 
-   for i = 1, 3, 1 do
+   for i = 1, #players do
       local pl = players[i]
       love.graphics.translate(pl.tx*ScaleX, pl.ty*ScaleY)
       love.graphics.setColor(pl.color)
@@ -107,24 +126,72 @@ function love.draw()
    
 end
 
-
-function testMap(x, y)
-   if map[y][x] == "#" or map[y+1][x] == "#" or map[y+1][x+1] == "#" or map[y][x+1] == "#"  then
-      return false
+function onCollision(idx, firstColl)
+   if firstColl == "c" then
+      players[idx].colliding = firstColl
+      sndCredit:play()
    end
-   return true
+   if firstColl == "y" and players[idx].player == "yellow" then
+      onCollectObject(idx, firstColl)
+      sndCredit:play()
+   end
+   if firstColl == "r" and players[idx].player == "red" then
+      onCollectObject(idx, firstColl)
+      sndCredit:play()
+   end
+   if firstColl == "b" and players[idx].player == "blue" then
+      onCollectObject(idx, firstColl)
+      sndCredit:play()
+   end
 end
+function resetCollision()
+   karteAufdecken = false
+end
+
+function onCollectObject(idx, typ)
+   local searchOn = {0,0,  1,0,   1,1,   0,1}
+   for i = 1, #searchOn, 2 do
+      if map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]] == typ then
+         map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]] = " "
+      end
+   end
+   refreshMap()
+end
+
+function getCollisions(x, y)
+   return { map[y][x], map[y+1][x], map[y+1][x+1], map[y][x+1] }
+end
+
+-- returns '#' if any element is '#', otherwise returns first non-space, otherwise returns space
+function testMap(coll)
+   res = " "
+   for i = 1, #coll do
+      if coll[i] == "#" then return "#" end
+      if coll[i] ~= " " then res = coll[i] end
+   end
+   return res
+end
+
 function round(num, idp)
    local mult = 10^(idp or 0)
    return math.floor(num * mult + 0.5) / mult
 end
+
 function movePlayer(idx, dX, dY)
-   newX = players[idx].tx + dX
-   newY = players[idx].ty + dY
-   if testMap(math.floor(newX), math.floor(newY)) == false then
+   resetCollision()
+   
+   local newX = players[idx].tx + dX
+   local newY = players[idx].ty + dY
+   local coll = getCollisions(math.floor(newX), math.floor(newY))
+   local firstColl = testMap(coll)
+   
+   if firstColl == "#" then
       if dX ~= 0 then players[idx].tx = round(players[idx].tx, 0) else players[idx].ty = round(players[idx].ty, 0) end
       return false
+   elseif firstColl ~= " " then
+      onCollision(idx, firstColl)
    end
+   
    players[idx].tx = newX
    players[idx].ty = newY
    return true
@@ -151,8 +218,8 @@ function love.update(dt)
       if dx ~= 0 or dy ~= 0 then
          movePlayer(CP, dx, 0)
          movePlayer(CP, 0, dy)
-         refreshDarkener()
          players[CP].direction = 0.5-(math.atan2(dx, dy)/math.pi)
+         refreshDarkener()
          print(math.atan2(dx,dy), math.atan2(dy,dx))
       end
    end
