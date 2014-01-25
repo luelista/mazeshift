@@ -84,7 +84,7 @@ function labyrinth:credit(num)
    
 end
 
-function resetPlayer(idx)
+function resetPlayer(i)
    local player = players[i]
    player.directionvector = mapScript.players[i].directionvector 
    player.tx = mapScript.players[i].x 
@@ -258,6 +258,7 @@ function playerDied(msg)
    if livesremaining > 0 then
       if msg == nil then msg = "YOU WERE KILLED" end
       setHugeoverlay(msg, livesremaining .. " live(s) remaining", 1)
+      resetPlayer(CP)
    else
       setHugeoverlay("GAME OVER", "press SPACE to try again")
       labyrinth.stopgame = true
@@ -284,7 +285,7 @@ function printInfobar()
    love.graphics.print(string.format("%05d", labyrinth.credits), 505, top)
 end
 
-function onCollision(idx, firstColl)
+function onCollision(idx, firstColl, cx, cy)
    if firstColl == "c" then
       --players[idx].colliding = firstColl
       sndBackgroundmusic:pause()
@@ -302,6 +303,7 @@ function onCollision(idx, firstColl)
    end
    
    players[idx].collision = firstColl
+   players[idx].collisionX = cx  players[idx].collisionY = cy
    if mapScript.imagemap ~= nil and mapScript.imagemap[firstColl] ~= nil and mapScript.imagemap[firstColl].consume then return " " end
 
    return firstColl
@@ -342,7 +344,7 @@ function fillMap(px,py,char,oldChar)
    if (map[py][px]==oldChar) then map[py][px]=char else return end
 
    if (px~=1) then fillMap(px-1, py, char, oldChar) end
-   if (px~=#map[px]) then fillMap(px+1, py, char, oldChar) end
+   if (px~=#map[py]) then fillMap(px+1, py, char, oldChar) end
 
    if (py~=1) then fillMap(px, py-1, char, oldChar) end
    if (py~=#map) then fillMap(px, py+1, char, oldChar) end
@@ -394,18 +396,20 @@ function labyrinth:update(dt)
       if dx ~= 0 or dy ~= 0 then
          movePlayer(CP, dx, 0)
          movePlayer(CP, 0, dy)
-         players[CP].direction = 0.5-(math.atan2(dx, dy)/math.pi)
-         players[CP].directionvector = {dx,dy}
+         local pl = players[CP]
+         pl.direction = 0.5-(math.atan2(dx, dy)/math.pi)
+         pl.directionvector = {dx,dy}
          
-         local colCached=players[CP].collision
-         players[CP].collision = " "
+         local old_col, old_cx, old_cy = pl.collision, pl.collisionX, pl.collisionY
+         pl.collision = " "
          onCheckCollision9(CP)
-
-         if (colCached ~= players[CP].collision) then
-            if (colCached ~= " ") then
-               mapScript:onCollision("leave",colCached,players[CP],players[CP].tx,players[CP].ty,CP)
-            else
-               mapScript:onCollision("enter",players[CP].collision,players[CP],players[CP].tx,players[CP].ty,CP)
+         print(old_col , pl.collision)
+         if (old_col ~= pl.collision or old_x ~= pl.collisionX or old_y ~= pl.collisionY) then
+            if (old_col ~= " ") then
+               mapScript:onCollision("leave",old_col,pl,pl.tx,pl.ty,CP)
+            end
+            if pl.collision ~= " " then
+               mapScript:onCollision("enter",pl.collision,pl,pl.tx,pl.ty,CP)
             end
          end
          
