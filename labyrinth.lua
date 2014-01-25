@@ -92,7 +92,7 @@ function refreshDarkener()
       local px = (p.tx+1-p.directionvector[1])*ScaleX
       local py = (p.ty+1-p.directionvector[2])*ScaleY
       --love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
-      love.graphics.draw(imgViewangle, px-30, py-30,  (p.direction-0.25)*math.pi, 1, 1, -30, -30)
+      love.graphics.draw(imgViewangle, p.tx*ScaleX+ScaleX, p.ty*ScaleY,  (p.direction-0.25)*math.pi, 1, 1, 30, 30)
       p.stencil = function()
          love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
       end
