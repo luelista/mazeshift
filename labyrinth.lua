@@ -74,11 +74,15 @@ function labyrinth:enter(oldstate, level)
    if (mapScript==nil) then
       mapScript={}
    end
-   
+
+   stepinterval = 0.05
+    
    if (mapScript.onLoad~=nil) then
       mapScript:onLoad()
    end
-
+   
+   print("stepinterval:",stepinterval)
+   
    resetPlayers()
    refreshDarkener()
    refreshMap()
@@ -397,11 +401,11 @@ end
 timerinterval = 0
 function labyrinth:update(dt)
    if labyrinth.stopgame then return end
-   
+   --print(dt)
    timerinterval = timerinterval + dt
    playtimesec = playtimesec + dt
-   if timerinterval > 0.05 then
-      timerinterval = timerinterval - 0.05
+   if timerinterval > stepinterval then
+      timerinterval = timerinterval % stepinterval
       
       local dx,dy=0,0
       if love.keyboard.isDown("up") or love.keyboard.isDown("w") then
@@ -437,7 +441,7 @@ function labyrinth:update(dt)
          end
          
          refreshDarkener()
-         --print(math.atan2(dx,dy), math.atan2(dy,dx))
+         --print(math.atan2(dx,dy), math.atan2(dy,dx))  
       end
    end
 end
@@ -465,6 +469,8 @@ function labyrinth:keypressed(key)
       CP = 5
    elseif key == "r" then
       labyrinth:enter()
+   elseif key == "up" or key == "down" or key == "left" or key == "right" then
+      timerinterval = stepinterval
    elseif key == "escape" then
       Gamestate.switch(pause)
    end
