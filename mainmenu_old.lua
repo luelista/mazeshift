@@ -17,16 +17,24 @@ function mainmenu_old:enter()
 
 end
 
-function mainmenu_old:draw()
-   love.graphics.setColor(255,0,0);
+function draw_menu_bg()
+   love.graphics.draw(imgDefaultBg, imgDefaultBgQuad, 0,0, 0, 1,1)
+   love.graphics.setColor(255,0,0,150);
    love.graphics.circle( "fill", canvasWidth/4*1, canvasHeight/5*4, canvasWidth/5, canvasHeight/5)
    
-   love.graphics.setColor(255,255,0);
+   love.graphics.setColor(255,255,0,150);
    love.graphics.circle( "fill", canvasWidth/1*1, canvasHeight/1*0, canvasWidth/4, canvasHeight/4)
    
-   love.graphics.setColor(0,0,255);
+   love.graphics.setColor(0,0,255,150);
    love.graphics.circle( "fill", canvasWidth/3*2, canvasHeight/3*2, canvasWidth/8, canvasHeight/8)
 
+   love.graphics.setColor(0,255,0,150);
+   love.graphics.circle( "fill", canvasWidth/2, canvasHeight/4*3, canvasWidth/6, canvasHeight/8)
+
+end
+
+function mainmenu_old:draw()
+   draw_menu_bg()
 
    love.graphics.setColor(255,255,255)
    love.graphics.setFont(fntTitle)

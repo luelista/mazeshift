@@ -27,6 +27,10 @@ function love.load()
    fntDefault = love.graphics.newFont(fontFilename, 12)
    fntTitle = love.graphics.newFont(fontFilename, 20)
    
+   imgDefaultBg = love.graphics.newImage("images/irongrip.png")
+   imgDefaultBg:setWrap("repeat", "repeat")
+   imgDefaultBgQuad = love.graphics.newQuad( 0,0, canvasWidth,canvasHeight, imgDefaultBg:getWidth(),imgDefaultBg:getHeight() )
+   
    sndBackgroundmusic = love.audio.newSource("sound/Silly Fun.mp3")
    sndBackgroundmusic:play()
    sndBackgroundmusic:setVolume(0.15)

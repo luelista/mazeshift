@@ -51,6 +51,12 @@ function pause:keypressed(key)
    if key == "r" then
       Gamestate.switch(labyrinth, labyrinth.current_level)
    end
+   if key == "n" then
+      Gamestate.switch(labyrinth, labyrinth.current_level+1)
+   end
+   if key == "p" then
+      Gamestate.switch(labyrinth, labyrinth.current_level-1)
+   end
    if key == "escape" then
       Gamestate.switch(labyrinth, nil)
    end

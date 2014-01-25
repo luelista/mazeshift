@@ -9,6 +9,7 @@ return {
       menuheight = 20,
       mouselasty = 0,
       menuthreshold = 5,
+      blinkytimer = 0, blinky = true, blinkyinterval = 0,
       add = function(self, txt, act)
          table.insert(self.menuitems, {tx = txt, a = act})
       end,
@@ -17,6 +18,13 @@ return {
         if mousey ~= mouselasty then   mouselasty = mousey
            local menuitem = self:getMenuByYPos(mousey)
            if menuitem ~= 0 then  self.curmenuitem = menuitem end
+        end
+        if self.blinkyinterval > 0 then
+           self.blinkytimer = self.blinkytimer + dt
+           if self.blinkytimer > self.blinkyinterval then
+              self.blinkytimer = self.blinkytimer - self.blinkyinterval
+              self.blinky = not self.blinky
+           end
         end
 			end,
 			draw = function(self, x, y)
@@ -27,7 +35,7 @@ return {
          for i = 1,#self.menuitems do
             top = top + self.menuheight
             love.graphics.print(self.menuitems[i].tx, 100, top)
-            if i == self.curmenuitem then love.graphics.print("", 80, top) end
+            if i == self.curmenuitem and self.blinky then love.graphics.print("", 80, top) end
          end
          
 			end,

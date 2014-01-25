@@ -39,7 +39,7 @@ function mainmenu:enter()
       str=(y*9)+x+1
       addMenuElement(str,
         fromCenter(str)+((x-4)*80),
-        220+(y*40),
+        180+(y*40),
         fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,(y*9)+x+1)
     end
   end
@@ -93,19 +93,13 @@ function renderMenuElement()
 end
 
 function mainmenu:draw()
-   love.graphics.setColor(255,0,0);
-   love.graphics.circle( "fill", canvasWidth/4*1, canvasHeight/5*4, canvasWidth/5, canvasHeight/5)
-   
-   love.graphics.setColor(255,255,0);
-   love.graphics.circle( "fill", canvasWidth/1*1, canvasHeight/1*0, canvasWidth/4, canvasHeight/4)
-   
-   love.graphics.setColor(0,0,255);
-   love.graphics.circle( "fill", canvasWidth/3*2, canvasHeight/3*2, canvasWidth/8, canvasHeight/8)
+   draw_menu_bg()
    
    renderMenuElement()
 
+   love.graphics.setFont(fntTitle)
    love.graphics.setColor(255,255,255);
-   love.graphics.print("SELECT YOUR LEVEL", (canvasWidth-fntDefault:getWidth("SELECT YOUR LEVEL"))/2, 100)
+   love.graphics.print("SELECT YOUR LEVEL", (canvasWidth-fntTitle:getWidth("SELECT YOUR LEVEL"))/2, 100)
 end
 
 mainmenu.lastx = 0   mainmenu.lasty = 0
