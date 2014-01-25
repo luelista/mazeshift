@@ -42,7 +42,7 @@ function labyrinth:enter(oldstate, level)
    end
    print("Hello, World!")
    map = {}
-   for line in love.filesystem.lines("map" .. labyrinth.current_level .. ".txt") do
+   for line in love.filesystem.lines("levels/map" .. labyrinth.current_level .. ".txt") do
       local mapline = {}
       for charr in string.gmatch(line, ".") do
          table.insert(mapline, charr)
