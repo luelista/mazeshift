@@ -12,27 +12,27 @@ function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
       return " "
    end
 
-   local rx=13
-   local ry=55
+   local rx=55
+   local ry=14
    local rx2=49
    local ry2=25
-   if maphandler == "x" then
+   if mapchar == "x" then
       if direction=="enter" then
-         mapFill(rx,ry,"g")
-         mapFill(rx2,ry2,"g")
+         fillMap(rx,ry,"g")
+         fillMap(rx2,ry2,"g")
       else
-         mapFill(rx,ry,"#")
+         fillMap(rx,ry,"#")
       end
    end
 
    local yx=49
    local yy=23
-   if maphandler == "y" then
+   if mapchar == "y" then
       if direction=="enter" then
-         mapFill(yx,yy,"g")
-         mapFill(yx,yy,"g")
+         fillMap(yx,yy,"g")
+         fillMap(yx,yy,"g")
       else
-         mapFill(yx,yy,"#")
+         fillMap(yx,yy,"#")
       end
    end
    
