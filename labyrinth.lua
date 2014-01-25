@@ -5,6 +5,8 @@ labyrinth.current_level = nil
 
 fntHuge = love.graphics.newFont(fontFilename, 48)
 
+
+levelFolder=nil
 function labyrinth:enter(oldstate, level)
    if level == nil then return end
    
@@ -12,7 +14,8 @@ function labyrinth:enter(oldstate, level)
    labyrinth.stopgame = false
    labyrinth.credits = 100
    
-   if love.filesystem.exists("levels/map" .. level .. ".txt") == false then
+   levelFolder="levels/map" .. level .. "/"
+   if love.filesystem.exists(levelFolder.."map.txt") == false then
       Gamestate.switch(most_epic_win)
       return
    end
@@ -33,8 +36,10 @@ function labyrinth:enter(oldstate, level)
    sndCredit = love.audio.newSource("sound/square-sweep-up.wav", "static")
    sndEpicWin = love.audio.newSource("sound/square-fanfare.wav", "static")
    
-   if (love.filesystem.exists("levels/map"..labyrinth.current_level.."bg.png")) then
-      levelBg=love.graphics.newImage("levels/map"..labyrinth.current_level.."bg.png")
+   if (love.filesystem.exists(levelFolder.."bg.png")) then
+      levelBg=love.graphics.newImage(levelFolder.."bg.png")
+   else
+      levelBg=nil
    end
 
    CP = 1
@@ -56,7 +61,7 @@ function labyrinth:enter(oldstate, level)
    
    print("Hello, World!")
    map = {}
-   for line in love.filesystem.lines("levels/map" .. labyrinth.current_level .. ".txt") do
+   for line in love.filesystem.lines(levelFolder.."map.txt") do
       local mapline = {}
       for charr in string.gmatch(line, ".") do
          table.insert(mapline, charr)
@@ -65,7 +70,7 @@ function labyrinth:enter(oldstate, level)
       table.insert(map, mapline)
    end
 
-   mapScript=require("levels/map"..labyrinth.current_level.."")
+   mapScript=require(levelFolder.."script")
    if (mapScript==nil) then
       mapScript={}
    end
