@@ -339,7 +339,11 @@ end
 
 function fillMap(px,py,char,oldChar)
    if char == oldChar then return end
-   if (oldChar==nil) then oldChar=map[py][px] end
+   local ref=false
+   if (oldChar==nil) then
+      oldChar=map[py][px]
+      ref=true
+   end
 
    if (map[py][px]==oldChar) then map[py][px]=char else return end
 
@@ -348,6 +352,12 @@ function fillMap(px,py,char,oldChar)
 
    if (py~=1) then fillMap(px, py-1, char, oldChar) end
    if (py~=#map) then fillMap(px, py+1, char, oldChar) end
+
+   if (ref) then
+      refreshMap()
+
+      
+   end
 end
 
 function round(num, idp)
