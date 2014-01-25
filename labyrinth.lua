@@ -24,6 +24,10 @@ function labyrinth:enter(oldstate, level)
    sndCredit = love.audio.newSource("sound/square-sweep-up.wav", "static")
    sndEpicWin = love.audio.newSource("sound/square-fanfare.wav", "static")
    
+   if (love.filesystem.exists("levels/map"..labyrinth.current_level.."bg.png")) then
+      levelBg=love.graphics.newImage("levels/map"..labyrinth.current_level.."bg.png")
+   end
+
    CP = 1
    ScaleX = 10
    ScaleY = 10
@@ -88,7 +92,13 @@ end
 
 function refreshMap()
    love.graphics.setCanvas(mapcanvas)
+   love.graphics.setColor(255,255,255)
    mapcanvas:clear()
+
+   if (levelBg~=nil) then
+      love.graphics.draw(levelBg,0,0);
+   end
+
    for i=1, #players do players[i].objectcanvas:clear() end
    
    for y=1, #map do
