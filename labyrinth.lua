@@ -2,7 +2,7 @@
 
 labyrinth = {}
 
-function labyrinth:load()
+function labyrinth:enter()
    darkener = love.graphics.newCanvas()
    mapcanvas = love.graphics.newCanvas()
    
@@ -239,7 +239,7 @@ function labyrinth:keypressed(key)
    elseif key == "3" then
       CP = 3
    elseif key == "escape" then
-      love.event.quit()
+      Gamestate.switch(mainmenu)
    end
 end
 

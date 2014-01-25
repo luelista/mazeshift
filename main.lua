@@ -15,5 +15,5 @@ function love.load()
    sndBackgroundmusic:setVolume(0.5)
 
    Gamestate.registerEvents()
-   Gamestate.switch(labyrinth)
+   Gamestate.switch(mainmenu)
 end
