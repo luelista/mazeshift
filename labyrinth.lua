@@ -250,26 +250,26 @@ end
 
 function fillMap(px,py,char,oldChar)
    if (oldChar==nil) then
-      oldChar=map[py,px]
+      oldChar=map[py][px]
    end
 
-   if (map[py,px]==oldChar) then
-      map[py,px]=char
+   if (map[py][px]==oldChar) then
+      map[py][px]=char
    else
       return
    end
 
-   if (px~=0) then
+   if (px~=1) then
       fillMap(px-1,py  ,char,oldChar)
    end
-   if (px~=#map[px])
+   if (px~=#map[px]) then
       fillMap(px-1,py  ,char,oldChar)
    end
 
-   if (py~=0) then
+   if (py~=1) then
       fillMap(px  ,py-1,char,oldChar)
    end
-   if (py~=#map)
+   if (py~=#map) then
       fillMap(px  ,py+1,char,oldChar)
    end
 end
