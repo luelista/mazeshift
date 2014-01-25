@@ -6,7 +6,10 @@ backgroundMusic = true
 
 require "labyrinth"
 require "mainmenu"
+require "mainmenu_old"
 require "pause"
+require "credits"
+MenuHelper = require "menu_helper"
 
 function love.load()
    io.stdout:setvbuf("no")
@@ -24,7 +27,7 @@ function love.load()
    sndBackgroundmusic:setVolume(0.15)
 
    Gamestate.registerEvents()
-   Gamestate.switch(mainmenu)
+   Gamestate.switch(mainmenu_old)
 end
 
 function love.update(dt)

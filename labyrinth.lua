@@ -172,6 +172,8 @@ function printInfobar()
    
    love.graphics.draw(imgCherry, 60, top)
    love.graphics.print(string.format("%d / %d", cherrysfound, cherrystotal), 80, top)
+
+   love.graphics.print(string.format("Level %03d", labyrinth.current_level), 180, top)
 end
 
 function onCollision(idx, firstColl)
@@ -211,8 +213,8 @@ end
 function onCheckCollision9(idx)
    local searchOn = {-1,-1, 0,-1, 1,-1,   -1,0, 0,0, 1,0,   -1,1, 0,1, 1,1}
    for i = 1, #searchOn-1, 2 do
-      if map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]] ~= " " then
-         coll = map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]]
+      coll = map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]]
+      if string.match(coll, "[a-z]") then
          if coll ~= " " then
             res = onCollision(idx, coll)
             map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]] = res

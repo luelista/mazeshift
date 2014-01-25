@@ -1,3 +1,4 @@
+-- -*- compile-command: "\"c:/Program Files/LOVE/love.exe\" ."; -*-
 
 mainmenu = {}
 
