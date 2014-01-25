@@ -10,6 +10,8 @@ function love.load()
    love.keyboard.setKeyRepeat(true)
    love.window.setMode(1024, 600, {})
    
+   fntDefault = love.graphics.newFont("fonts/PrintChar21.ttf", 12)
+   
    sndBackgroundmusic = love.audio.newSource("sound/Silly Fun.mp3")
    sndBackgroundmusic:play()
    sndBackgroundmusic:setVolume(0.5)
