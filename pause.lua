@@ -10,7 +10,7 @@ function pause:enter()
    pause.menu:add("CHEAT: SHOW MAP", function() labyrinth.show_map = true end)
    pause.menu:add("MUSIC: ON", toggleBackgroundMusic)
    pause.menu:add("FULLSCREEN: OFF", toggleFullscreen)
-   pause.menu:add("BACK TO MAIN MENU", function() Gamestate.switch(mainmenu) end)
+   pause.menu:add("BACK TO MAIN MENU", function() Gamestate.switch(mainmenu_old) end)
    pause.menu:add("UIT GAME", function() love.event.quit() end)
 end
 

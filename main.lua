@@ -17,7 +17,7 @@ timerlist = {}
 function love.load()
    io.stdout:setvbuf("no")
    
-   love.keyboard.setKeyRepeat(true)
+   --love.keyboard.setKeyRepeat(true)
    love.window.setTitle("MAZE SHIFT")
    love.window.setIcon(love.image.newImageData("images/cherry.png"))
    
