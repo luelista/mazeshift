@@ -311,11 +311,12 @@ end
 function onCheckCollision9(idx)
    local searchOn = {-1,-1, 0,-1, 1,-1,   -1,0, 0,0, 1,0,   -1,1, 0,1, 1,1}
    for i = 1, #searchOn-1, 2 do
-      coll = map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]]
+      local cy, cx = players[idx].ty + searchOn[i], players[idx].tx + searchOn[i+1]
+      coll = map[cy][cx]
       if string.match(coll, "[a-z]") then
          if coll ~= " " then
-            res = onCollision(idx, coll)
-            map[players[idx].ty + searchOn[i]][players[idx].tx + searchOn[i+1]] = res
+            res = onCollision(idx, coll, cx, cy)
+            map[cy][cx] = res
             refreshMap()
             return
          end
