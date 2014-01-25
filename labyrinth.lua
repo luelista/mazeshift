@@ -327,14 +327,15 @@ function onCheckCollision9(idx)
 end
 
 -- returns '#' if any element is '#', otherwise returns first non-space, otherwise returns space
-function testMap(x, y)
+function testMap(x, y, player)
    coll = { map[y][x], map[y+1][x], map[y+1][x+1], map[y][x+1] }
    res = " "
    for i = 1, #coll do
-      if coll[i] == "#" then return "#" end
+      if coll[i] == "#" then return false end
       if coll[i] ~= " " then res = coll[i] end
    end
-   return res
+
+   return (not (string.match(res, "[A-Z]") ~= nil and res:lower() ~= player.player))
 end
 
 function fillMap(px,py,char,oldChar)
@@ -356,7 +357,14 @@ function fillMap(px,py,char,oldChar)
    if (ref) then
       refreshMap()
 
-      
+      local i
+      for i=1,#players do
+         local x=testMap(players[i].tx, players[i].ty,players[i])
+         if (x==false) then
+            CP=i
+            playerDied()
+         end
+      end
    end
 end
 
@@ -369,9 +377,9 @@ function movePlayer(idx, dX, dY)
    local p = players[idx]
    local newX = p.tx + dX
    local newY = p.ty + dY
-   local firstColl = testMap(math.floor(newX), math.floor(newY))
+   local validPos = testMap(math.floor(newX), math.floor(newY),p)
    
-   if firstColl == "#" or (string.match(firstColl, "[A-Z]") ~= nil and firstColl:lower() ~= p.player) then
+   if (not validPos) then
       if dX ~= 0 then p.tx = round(p.tx, 0) else p.ty = round(p.ty, 0) end
       return false
    end
