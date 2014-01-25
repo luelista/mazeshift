@@ -119,7 +119,7 @@ function refreshMap()
          elseif string.match(map[y][x], "[a-z]") then
             love.graphics.setColor(255,255,255)
             local img = mapScript.imagemap[map[y][x]]
-            if img ~= nil then img = imgTrigger end
+            if img == nil then img = imgTrigger end
             love.graphics.draw(img, x * ScaleX, y * ScaleY)
          end
       end
@@ -249,6 +249,8 @@ function testMap(x, y)
 end
 
 function fillMap(px,py,char,oldChar)
+   if char == oldChar then return end
+
    if (oldChar==nil) then
       oldChar=map[py][px]
    end
@@ -263,7 +265,7 @@ function fillMap(px,py,char,oldChar)
       fillMap(px-1,py  ,char,oldChar)
    end
    if (px~=#map[px]) then
-      fillMap(px-1,py  ,char,oldChar)
+      fillMap(px+1,py  ,char,oldChar)
    end
 
    if (py~=1) then
