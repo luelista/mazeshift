@@ -21,8 +21,8 @@ return {
 			update = function(self, dt)
 				local mousey = love.mouse.getY()
         if mousey ~= mouselasty then   mouselasty = mousey
-           local menuitem = mainmenu_old:getMenuByYPos(mousey)
-           if menuitem ~= 0 then  mainmenu_old.curmenuitem = menuitem end
+           local menuitem = self:getMenuByYPos(mousey)
+           if menuitem ~= 0 then  self.curmenuitem = menuitem end
         end
 			end,
 			draw = function(self, x, y)

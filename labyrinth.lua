@@ -19,6 +19,7 @@ function labyrinth:enter(oldstate, level)
    
    imgCherry = love.graphics.newImage("images/cherry.png")
    imgStar = love.graphics.newImage("images/star.png")
+   imgTrigger = love.graphics.newImage("images/trigger.png")
    
    sndCredit = love.audio.newSource("sound/square-sweep-up.wav", "static")
    sndEpicWin = love.audio.newSource("sound/square-fanfare.wav", "static")
@@ -51,7 +52,7 @@ function labyrinth:enter(oldstate, level)
       table.insert(map, mapline)
    end
 
-   mapScript=require("levels.map"..labyrinth.current_level..".lua")
+   mapScript=require("levels/map"..labyrinth.current_level.."")
    if (mapScript==nil) then
       mapScript={}
    end
@@ -93,12 +94,10 @@ function refreshMap()
          if map[y][x] == "#" then
             love.graphics.setColor(99,99,99)
             love.graphics.rectangle("fill", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
-         end
-         if map[y][x] == "c" then
+         elseif map[y][x] == "c" then
             love.graphics.setColor(255,255,255)
             love.graphics.draw(imgCherry, x * ScaleX, y * ScaleY)
-         end
-         if map[y][x] == "r" or map[y][x] == "y" or map[y][x] == "b" then
+         elseif map[y][x] == "r" or map[y][x] == "y" or map[y][x] == "b" then
             love.graphics.setColor(111,111,111)
             love.graphics.draw(imgStar, (x) * ScaleX, (y) * ScaleY)
             for i = 1, #players do if map[y][x] == players[i].player:sub(1,1) then
@@ -106,8 +105,7 @@ function refreshMap()
                   love.graphics.draw(imgStar, (x) * ScaleX, (y) * ScaleY)
                   love.graphics.setCanvas(mapcanvas)
             end end
-         end
-         if map[y][x] == "R" or map[y][x] == "Y" or map[y][x] == "B" then
+         elseif map[y][x] == "R" or map[y][x] == "Y" or map[y][x] == "B" then
             love.graphics.setColor(111,111,111)
             love.graphics.rectangle("fill", (x) * ScaleX, (y) * ScaleY, ScaleX, ScaleY)
             for i = 1, #players do if map[y][x] == players[i].player:upper() then
@@ -115,6 +113,9 @@ function refreshMap()
                   love.graphics.rectangle("fill", (x) * ScaleX+1, (y) * ScaleY+1, ScaleX-2, ScaleY-2)
                   love.graphics.setCanvas(mapcanvas)
             end end
+         elseif string.match(map[y][x], "[a-z]") then
+            love.graphics.setColor(255,255,255)
+            love.graphics.draw(imgTrigger, x * ScaleX, y * ScaleY)
          end
       end
    end
@@ -210,8 +211,7 @@ function onCollision(idx, firstColl)
       return " "
    end
 
-   players[idx].collision=true
-   players[idx].collisionFrom=firstColl
+   players[idx].collision = firstColl
 
    return firstColl
 end
@@ -249,8 +249,6 @@ function round(num, idp)
 end
 
 function movePlayer(idx, dX, dY)
-   resetCollision()
-   
    local p = players[idx]
    local newX = p.tx + dX
    local newY = p.ty + dY
@@ -291,17 +289,16 @@ function labyrinth:update(dt)
          players[CP].direction = 0.5-(math.atan2(dx, dy)/math.pi)
          players[CP].directionvector = {dx,dy}
          
-         local colCached=players[CP].colliding
-         local colFCached=players[CP].collidingFrom
+         local colCached=players[CP].collision
+         players[CP].collision = " "
          onCheckCollision9(CP)
 
-         if (colCached~=players[CP].collision) then
-            if (mapScript[players[CP].collidingFrom]~=nil) then
-               if (colCached) then
-                  mapScript[players[CP].collidingFrom]("leave",players[CP].collidingFrom,players[CP],players[CP].tx,players[CP].ty,CP)
-               else
-                  mapScript[players[CP].collidingFrom]("enter",players[CP].collidingFrom,players[CP],players[CP].tx,players[CP].ty,CP)
-               end
+         if (colCached ~= players[CP].collision) then
+            print("collision ", colCached, players[CP].collision)
+            if (colCached ~= " ") then
+               mapScript:onCollision("leave",colCached,players[CP],players[CP].tx,players[CP].ty,CP)
+            else
+               mapScript:onCollision("enter",players[CP].collision,players[CP],players[CP].tx,players[CP].ty,CP)
             end
          end
          
