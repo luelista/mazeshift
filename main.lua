@@ -18,6 +18,8 @@ function love.load()
    io.stdout:setvbuf("no")
    
    love.keyboard.setKeyRepeat(true)
+   love.window.setTitle("MAZE SHIFT")
+   love.window.setIcon(love.image.newImageData("images/cherry.png"))
    
    canvasWidth = 1024   canvasHeight = 600
    love.window.setMode(canvasWidth, canvasHeight, {fullscreen=false})

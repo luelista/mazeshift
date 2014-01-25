@@ -82,7 +82,7 @@ function refreshDarkener()
    love.graphics.setCanvas(darkener)
    darkener:clear()
    love.graphics.setBlendMode('alpha')
-   love.graphics.setColor(0, 0, 0, 222)
+   love.graphics.setColor(0, 0, 0, 238)
    love.graphics.rectangle("fill", 0, 0, 1200, 600)
    love.graphics.setBlendMode('multiplicative')
    for pl = 1, #players do

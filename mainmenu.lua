@@ -44,7 +44,7 @@ function mainmenu:enter()
   addMenuElement(str,fromCenter(700),canvasHeight-40,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuToogleFullscreen)
 
 
-  str="Exit"
+  str="Back"
   addMenuElement(str,canvasWidth-300,canvasHeight-30,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuQuit)
 
   local x,ysizeX
@@ -128,14 +128,14 @@ function mainmenu:keypressed(key)
    if key == " " then --space
       Gamestate.switch(labyrinth)
    elseif key == "escape" then
-      love.event.quit()
+      Gamestate.switch(mainmenu_old)
    end
 end
 
 --menu events
 
 function menuQuit(button)
-  love.event.quit()
+   Gamestate.switch(mainmenu_old)
 end
 
 function menuLevel(button)
