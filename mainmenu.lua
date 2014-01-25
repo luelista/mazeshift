@@ -36,6 +36,13 @@ function mainmenu:enter()
   str="Levels"
   addMenuElement(str,fromCenter(fntDefault:getWidth(str)),180,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
 
+  str="Toogle Sound: ON"
+  addMenuElement(str,fromCenter(800),canvasHeight-70,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuToogleMusic)
+
+  str="Toogle Fullscreen: OFF"
+  addMenuElement(str,fromCenter(700),canvasHeight-40,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuToogleFullscreen)
+
+
   str="Exit"
   addMenuElement(str,canvasWidth-300,canvasHeight-30,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuQuit)
 
@@ -134,4 +141,28 @@ function menuLevel(button)
   local lvl=button.info
 
   Gamestate.switch(labyrinth,lvl)
+end
+
+function menuToogleMusic(button)
+  if (backgroundMusic) then
+    sndBackgroundmusic:pause()
+    button.txt="Toogle Sound: OFF"
+  else
+    sndBackgroundmusic:resume()
+    button.txt="Toogle Sound: ON"
+  end
+
+  backgroundMusic=(backgroundMusic==false)
+end
+
+function menuToogleFullscreen(button)
+  local fs=love.window.getFullscreen()
+
+  if (fs) then
+    button.txt="Toogle Fullscreen: OFF"
+  else
+    button.txt="Toogle Fullscreen: ON"
+  end
+
+  love.window.setFullscreen(false==fs)
 end
