@@ -1,9 +1,21 @@
 
 mainmenu = {}
 
+function drawLabelCentered(str,height)
+  local font=love.graphics.getFont()
+  local w=font:getWidth("Main Menu");
+  love.graphics.print("Main Menu", (canvasWidth-w)/2, 100)
+end
+
 function mainmenu:draw()
-   love.graphics.print("Main Menu", 100, 100)
-   love.graphics.print("SPACE to start", 200, 100)
+  
+
+  drawLabelCentered("Main Menu",0)
+
+  drawLabelCentered("Start",20)
+  drawLabelCentered("Level",40)
+  drawLabelCentered("Exit" ,60)
+
 end
 
 
@@ -14,5 +26,3 @@ function mainmenu:keypressed(key)
       love.event.quit()
    end
 end
-
-
