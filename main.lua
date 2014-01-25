@@ -8,7 +8,11 @@ function love.load()
    io.stdout:setvbuf("no")
    
    love.keyboard.setKeyRepeat(true)
-   love.window.setMode(1024, 600, {})
+   
+   canvasWidth = 1024   canvasHeight = 600
+   love.window.setMode(canvasWidth, canvasHeight, {})
+   
+   fntDefault = love.graphics.newFont("fonts/PrintChar21.ttf", 12)
    
    sndBackgroundmusic = love.audio.newSource("sound/Silly Fun.mp3")
    sndBackgroundmusic:play()

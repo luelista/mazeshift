@@ -2,6 +2,8 @@
 
 labyrinth = {}
 
+playtimesec = 0
+
 function labyrinth:enter()
    darkener = love.graphics.newCanvas()
    mapcanvas = love.graphics.newCanvas()
@@ -103,7 +105,6 @@ function labyrinth:draw()
    love.graphics.setColor(255,255,255,255)
    love.graphics.draw(mapcanvas)
 
-
    for i = 1, #players do
       local pl = players[i]
       love.graphics.setStencil(pl.stencil)
@@ -126,6 +127,9 @@ function labyrinth:draw()
       love.graphics.translate(-pl.tx*ScaleX, -pl.ty*ScaleY)
    end
    
+   love.graphics.setColor(255,255,255,255)
+   love.graphics.setFont(fntDefault)
+   love.graphics.print(math.floor(playtimesec/60) .. ":" .. math.floor(playtimesec%60), 10, canvasHeight - 20)
 end
 
 function onCollision(idx, firstColl)
@@ -203,6 +207,7 @@ end
 timerinterval = 0
 function labyrinth:update(dt)
    timerinterval = timerinterval + dt
+   playtimesec = playtimesec + dt
    if timerinterval > 0.05 then
       timerinterval = timerinterval - 0.05
       local dx,dy=0,0
