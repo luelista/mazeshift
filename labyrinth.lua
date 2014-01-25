@@ -9,9 +9,15 @@ function labyrinth:enter(oldstate, level)
    if level == nil then return end
    
    labyrinth.current_level = level
+   labyrinth.stopgame = false
+   
+   if love.filesystem.exists("levels/map" .. level .. ".txt") == false then
+      Gamestate.switch(most_epic_win)
+      return
+   end
    
    playtimesec = 0
-   cherrysfound = 0 cherrystotal = 0
+   cherrysfound = 0 cherrystotal = 0 livesremaining = 3
    hugeoverlay = ""
    
    darkener = love.graphics.newCanvas()
@@ -20,6 +26,8 @@ function labyrinth:enter(oldstate, level)
    imgCherry = love.graphics.newImage("images/cherry.png")
    imgStar = love.graphics.newImage("images/star.png")
    imgTrigger = love.graphics.newImage("images/trigger.png")
+   imgLife = love.graphics.newImage("images/life.png")
+   imgViewangle = love.graphics.newImage("images/viewangle.png")
    
    sndCredit = love.audio.newSource("sound/square-sweep-up.wav", "static")
    sndEpicWin = love.audio.newSource("sound/square-fanfare.wav", "static")
@@ -65,21 +73,24 @@ end
 function refreshDarkener()
    love.graphics.setCanvas(darkener)
    darkener:clear()
-   love.graphics.setBlendMode('replace')
-   love.graphics.setColor(0, 0, 0, 230)
+   love.graphics.setBlendMode('alpha')
+   love.graphics.setColor(0, 0, 0, 222)
    love.graphics.rectangle("fill", 0, 0, 1200, 600)
+   love.graphics.setBlendMode('multiplicative')
    for pl = 1, #players do
-      love.graphics.setColor(255,255,255,20)
+      love.graphics.setColor(255,255,255,255)
       --love.graphics.circle("fill", players[pl].x, players[pl].y, 100)
       local p = players[pl]
       local px = (p.tx+1-p.directionvector[1])*ScaleX
       local py = (p.ty+1-p.directionvector[2])*ScaleY
-      love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
+      --love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
+      love.graphics.draw(imgViewangle, px-30, py-30,  (p.direction-0.25)*math.pi, 1, 1, -30, -30)
       p.stencil = function()
          love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
       end
    end
    love.graphics.setCanvas()
+   love.graphics.setBlendMode('alpha')
 end
 
 function refreshMap()
@@ -100,14 +111,6 @@ function refreshMap()
          elseif map[y][x] == "c" then
             love.graphics.setColor(255,255,255)
             love.graphics.draw(imgCherry, x * ScaleX, y * ScaleY)
-         elseif map[y][x] == "r" or map[y][x] == "y" or map[y][x] == "b" then
-            love.graphics.setColor(111,111,111)
-            love.graphics.draw(imgStar, (x) * ScaleX, (y) * ScaleY)
-            for i = 1, #players do if map[y][x] == players[i].player:sub(1,1) then
-                  love.graphics.setCanvas(players[i].objectcanvas) love.graphics.setColor(players[i].color)
-                  love.graphics.draw(imgStar, (x) * ScaleX, (y) * ScaleY)
-                  love.graphics.setCanvas(mapcanvas)
-            end end
          elseif map[y][x] == "R" or map[y][x] == "Y" or map[y][x] == "B" then
             love.graphics.setColor(111,111,111)
             love.graphics.rectangle("fill", (x) * ScaleX, (y) * ScaleY, ScaleX, ScaleY)
@@ -117,15 +120,25 @@ function refreshMap()
                   love.graphics.setCanvas(mapcanvas)
             end end
          elseif string.match(map[y][x], "[a-z]") then
-            love.graphics.setColor(255,255,255)
+            
             local img = mapScript.imagemap[map[y][x]]
-            if img == nil then img = imgTrigger end
-            love.graphics.draw(img, x * ScaleX, y * ScaleY)
+            if img == nil then img = { imgTrigger } end
+            if img.inactiveColor == nil then love.graphics.setColor(255,255,255) else  love.graphics.setColor(img.inactiveColor) end
+            
+            love.graphics.draw(img[1], x * ScaleX, y * ScaleY)
+            if img.player ~= nil then
+               for i = 1, #players do if img.player == players[i].player:sub(1,1) then
+                     love.graphics.setCanvas(players[i].objectcanvas) love.graphics.setColor(players[i].color)
+                     love.graphics.draw(img[1], (x) * ScaleX, (y) * ScaleY)
+                     love.graphics.setCanvas(mapcanvas)
+               end end
+            end
          end
       end
    end
    love.graphics.setCanvas()
 end
+
 
 function labyrinth:draw()
    -- love.graphics.print("Hello World", 400, 300)
@@ -136,13 +149,14 @@ function labyrinth:draw()
 
    for i = 1, #players do
       local pl = players[i]
-      love.graphics.setStencil(pl.stencil)
+      if not labyrinth.show_map then love.graphics.setStencil(pl.stencil) end
       love.graphics.draw(pl.objectcanvas)
       love.graphics.setStencil()
    end
    
-   
-   love.graphics.draw(darkener)
+   if not labyrinth.show_map then
+      love.graphics.draw(darkener)
+   end
 
    for i = 1, #players do
       local pl = players[i]
@@ -171,8 +185,36 @@ overlayalpha = 0
 function drawHugeoverlay()
    love.graphics.setColor(255,255,255,math.min(overlayalpha,255))
    love.graphics.setFont(fntHuge)
-   love.graphics.print(hugeoverlay, (canvasWidth-fntHuge:getWidth(hugeoverlay))/2, canvasHeight/2-10)
-   
+   love.graphics.print(hugeoverlay, (canvasWidth-fntHuge:getWidth(hugeoverlay))/2, canvasHeight/2-45)
+   love.graphics.setFont(fntTitle)
+   love.graphics.print(hugeoverlay2, (canvasWidth-fntTitle:getWidth(hugeoverlay2))/2, canvasHeight/2+40)
+end
+
+function setHugeoverlay(text, text2, timeout)
+   overlayalpha = 0
+   hugeoverlay = text   hugeoverlay2 = text2
+   function hugeoverlayincrease() 
+      overlayalpha = overlayalpha + 2
+      if overlayalpha < 255 then setTimeout(hugeoverlayincrease, 0.01) end
+   end
+   setTimeout(hugeoverlayincrease, 0.02)
+   if timeout ~= nil then
+      function hugeoverlaydecrease() 
+         overlayalpha = overlayalpha - 10
+         if overlayalpha > 0 then setTimeout(hugeoverlaydecrease, 0.01) else hugeoverlay = "" end
+      end
+      setTimeout(hugeoverlaydecrease, timeout)
+   end
+end
+
+function playerDied()
+   livesremaining = livesremaining - 1
+   if livesremaining > 0 then
+      setHugeoverlay("YOU WERE KILLED", livesremaining .. " live(s) remainging", 1)
+   else
+      setHugeoverlay("GAME OVER", "press SPACE to try again")
+      labyrinth.stopgame = true
+   end
 end
 
 function printInfobar()
@@ -182,10 +224,13 @@ function printInfobar()
    love.graphics.setFont(fntDefault)
    love.graphics.print(string.format("%d:%02d", math.floor(playtimesec/60), math.floor(playtimesec%60)), 10, top)
    
-   love.graphics.draw(imgCherry, 60, top)
-   love.graphics.print(string.format("%d / %d", cherrysfound, cherrystotal), 80, top)
+   love.graphics.draw(imgCherry, 70, top-2)
+   love.graphics.print(string.format("%d / %d", cherrysfound, cherrystotal), 100, top)
 
    love.graphics.print(string.format("Level %03d", labyrinth.current_level), 180, top)
+   
+   love.graphics.draw(imgLife, 295, top-4)
+   love.graphics.print(string.format("%02d", livesremaining), 320, top)
 end
 
 function onCollision(idx, firstColl)
@@ -194,7 +239,8 @@ function onCollision(idx, firstColl)
       sndBackgroundmusic:pause()
       cherrysfound = cherrysfound + 1
       if cherrysfound == cherrystotal then
-         hugeoverlay = "EPIC WIN!"
+         setHugeoverlay("EPIC WIN!", "  press SPACE for next level\n\npress ESCAPE to return to menu")
+         labyrinth.stopgame = true
          sndBackgroundmusic:pause()
          sndEpicWin:setVolume(2)
          sndEpicWin:play()
@@ -204,7 +250,7 @@ function onCollision(idx, firstColl)
       return " "
    end
    if firstColl == "y" and players[idx].player == "y" then
-      sndBackgroundmusic:pause() sndCredit:play()
+      sndBackgroundmusic:pause() sndCredit:play() labyrinth.show_map=true hidemaptimer=10
       return " "
    end
    if firstColl == "r" and players[idx].player == "r" then
@@ -282,6 +328,8 @@ function round(num, idp)
 end
 
 function movePlayer(idx, dX, dY)
+   if labyrinth.stopgame then return end
+
    local p = players[idx]
    local newX = p.tx + dX
    local newY = p.ty + dY
@@ -303,6 +351,7 @@ function labyrinth:update(dt)
    playtimesec = playtimesec + dt
    if timerinterval > 0.05 then
       timerinterval = timerinterval - 0.05
+      
       local dx,dy=0,0
       if love.keyboard.isDown("up") or love.keyboard.isDown("w") then
          dy = dy - 1
@@ -327,7 +376,6 @@ function labyrinth:update(dt)
          onCheckCollision9(CP)
 
          if (colCached ~= players[CP].collision) then
-            print("collision ", colCached, players[CP].collision)
             if (colCached ~= " ") then
                mapScript:onCollision("leave",colCached,players[CP],players[CP].tx,players[CP].ty,CP)
             else
@@ -339,10 +387,16 @@ function labyrinth:update(dt)
          --print(math.atan2(dx,dy), math.atan2(dy,dx))
       end
    end
-   if hugeoverlay ~= "" and overlayalpha < 255 then overlayalpha = overlayalpha + (dt * 255) end
 end
 
 function labyrinth:keypressed(key)
+   print(labyrinth.stopgame,livesremaining,labyrinth.current_level)
+   if labyrinth.stopgame and (key == " " or key == "return") then
+      if livesremaining == 0 then labyrinth:enter("labyrinth",labyrinth.current_level) 
+      else labyrinth:enter("labyrinth",labyrinth.current_level + 1) end
+      return
+   end
+   
    if key == " " then --space
       CP = CP + 1
       if CP > 3 then CP = 1 end

@@ -9,7 +9,10 @@ require "mainmenu"
 require "mainmenu_old"
 require "pause"
 require "credits"
+require "most_epic_win"
 MenuHelper = require "menu_helper"
+
+timerlist = {}
 
 function love.load()
    io.stdout:setvbuf("no")
@@ -32,5 +35,14 @@ end
 
 function love.update(dt)
    if love.audio.getSourceCount() == 1 and sndBackgroundmusic:isPaused() and backgroundMusic then sndBackgroundmusic:resume() end
+   for i=#timerlist,1,-1 do
+      timerlist[i].t = timerlist[i].t - dt
+      if timerlist[i].t <= 0 then local c=timerlist[i].c table.remove(timerlist,i) c() end
+   end
 end
+
+function setTimeout(callback, time)
+   table.insert(timerlist, { c = callback, t = time })
+end
+
 

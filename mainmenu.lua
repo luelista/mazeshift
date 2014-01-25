@@ -24,10 +24,11 @@ function mainmenu:enter()
   menuElementCt=1;
 
   local str
-  str="Labyrinth"
-  addMenuElement(str,fromCenter(fntTitle:getWidth(str)),20,fntTitle:getWidth(str),fntTitle:getHeight(str),fntTitle)
+  --str="Labyrinth"
+  --addMenuElement(str,fromCenter(fntTitle:getWidth(str)),20,fntTitle:getWidth(str),fntTitle:getHeight(str),fntTitle)
 
-  str="Main Menu"
+  --str="Main Menu"
+  str = "SELECT YOUR LEVEL"
   addMenuElement(str,fromCenter(fntDefault:getWidth(str)),55,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,1)
 
   str="Start"

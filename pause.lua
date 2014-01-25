@@ -37,7 +37,7 @@ end
 
 function pause:keypressed(key)
    if key == "q" then
-      onMenuItem("QUIT GAME")
+      love.event.quit()
    end
    pause.menu:keypressed(key)
 end

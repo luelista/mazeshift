@@ -11,18 +11,19 @@
 #                                                                          #
 #                                                                          #
 #                                                                          #
-#                                                                          #
 #                                    ...............                       #
+#                                    .             .                       #
+#         RRRR   BBBB   YYYY         .   kkkkkkk   .                       #
+#         Rc R   Bc B   Yc Y         .             .                       #
+#         R  R   B  B   Y  Y         .   k c   k   .                       #
 #         RRRR   BBBB   YYYY         .             .                       #
-#         Rc R   Bc B   Yc Y         .     k       .                       #
-#         R  R   B  B   Y  Y         .             .                       #
-#         RRRR   BBBB   YYYY         .             .                       #
+#                                    .   kkkkkkk   .                       #
 #                                    .             .                       #
-#                                    .             .                       #
-#                                    .             .                       #
-#                                    .             .                       #
-#                                    .             .                       #
-#                                    .             .                       #
+#                                    . ########### .                       #
+#                                    .   RRRRRRR   .                       #
+#                                    .   R l   R   .                       #
+#                                    .   R     R   .                       #
+#                                    .   RRRRRRR   .                       #
 #                                    ...............                       #
 #                                                                          #
 #                                                                          #
@@ -30,7 +31,6 @@
 #                                                                          #
 #                                                                          #
 #                                                                          #
-#                   l                                                      #
 #                                                                          #
 #                                                                          #
 #                                                                          #
