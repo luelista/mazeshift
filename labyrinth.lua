@@ -302,7 +302,7 @@ function onCollision(idx, firstColl)
    end
    
    players[idx].collision = firstColl
-   if mapScript.imagemap[firstColl].consume then return " " end
+   if mapScript.imagemap ~= nil and mapScript.imagemap[firstColl] ~= nil and mapScript.imagemap[firstColl].consume then return " " end
 
    return firstColl
 end
