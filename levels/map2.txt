@@ -12,14 +12,14 @@
 #                                                                          #
 #                                                                          #
 #                                                                          #
+#                                    ...............                       #
+#         RRRR   BBBB   YYYY         .             .                       #
+#         Rc R   Bc B   Yc Y         .     k       .                       #
+#         R  R   B  B   Y  Y         .             .                       #
+#         RRRR   BBBB   YYYY         ...............                       #
 #                                                                          #
-#         RRRR   BBBB   YYYY                                               #
-#         Rc R   Bc B   Yc Y                                               #
-#         R  R   B  B   Y  Y                                               #
-#         RRRR   BBBB   YYYY                                               #
 #                                                                          #
 #                                                                          #
-#                                           k                              #
 #                                                                          #
 #                                                                          #
 #                                                                          #

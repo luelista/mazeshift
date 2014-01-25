@@ -94,6 +94,9 @@ function refreshMap()
          if map[y][x] == "#" then
             love.graphics.setColor(99,99,99)
             love.graphics.rectangle("fill", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
+         elseif map[y][x] == "." then
+            love.graphics.setColor(99,99,99)
+            love.graphics.rectangle("line", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
          elseif map[y][x] == "c" then
             love.graphics.setColor(255,255,255)
             love.graphics.draw(imgCherry, x * ScaleX, y * ScaleY)
@@ -115,7 +118,9 @@ function refreshMap()
             end end
          elseif string.match(map[y][x], "[a-z]") then
             love.graphics.setColor(255,255,255)
-            love.graphics.draw(imgTrigger, x * ScaleX, y * ScaleY)
+            local img = mapScript.imagemap[map[y][x]]
+            if img ~= nil then img = imgTrigger end
+            love.graphics.draw(img, x * ScaleX, y * ScaleY)
          end
       end
    end
