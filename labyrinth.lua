@@ -424,13 +424,17 @@ function labyrinth:keypressed(key)
    
    if key == " " then --space
       CP = CP + 1
-      if CP > 3 then CP = 1 end
+      if CP > #players then CP = 1 end
    elseif key == "1" then
       CP = 1
-   elseif key == "2" then
+   elseif key == "2" and #players >= 2 then
       CP = 2
-   elseif key == "3" then
+   elseif key == "3" and #players >= 3 then
       CP = 3
+   elseif key == "4" and #players >= 4 then
+      CP = 4
+   elseif key == "5" and #players >= 5 then
+      CP = 5
    elseif key == "r" then
       labyrinth:enter()
    elseif key == "escape" then
