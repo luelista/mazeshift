@@ -1,3 +1,4 @@
+-- -*- compile-command: "\"c:/Program Files/LOVE/love.exe\" ."; -*-
 
 function love.load()
    io.stdout:setvbuf("no")
@@ -9,6 +10,7 @@ function love.load()
    mapcanvas = love.graphics.newCanvas()
    
    imgCherry = love.graphics.newImage("cherry.png")
+   imgStar = love.graphics.newImage("star.png")
    
    CP = 1
    ScaleX = 10
@@ -16,16 +18,16 @@ function love.load()
    players = {
       { tx = 3, ty = 3, player = "red", direction = 0.5, speed = 50,
         form = {0, 0, 20, 0, 20, 20, 0, 20},
-        color = {200, 50, 50} },
-      { tx = 5, ty = 5, player = "yellow", direction = 1, speed = 50,
+        color = {200, 50, 50}, objectcanvas = love.graphics.newCanvas() },
+      { tx = 50, ty = 15, player = "yellow", direction = 1, speed = 50,
         form = {7,0,   14,0,   21,10,   14,20,   7,20,   0,10},
-        color = {200, 250, 50} },
-      { tx = 7, ty = 7, player = "blue", direction = 1.5, speed = 50,
+        color = {200, 250, 50}, objectcanvas = love.graphics.newCanvas() },
+      { tx = 7, ty = 46, player = "blue", direction = 1.5, speed = 50,
         form = {10, 0, 20, 20, 0, 20},
-        color = {50, 50, 250} }
+        color = {50, 50, 250}, objectcanvas = love.graphics.newCanvas() }
    }
 
-   print("aaa")
+   print("Hello, World!")
    map = {}
    for line in love.filesystem.lines("map1.txt") do
       local mapline = {}
@@ -43,7 +45,7 @@ function refreshDarkener()
    love.graphics.setCanvas(darkener)
    darkener:clear()
    love.graphics.setBlendMode('replace')
-   love.graphics.setColor(0, 0, 0, 200)
+   love.graphics.setColor(0, 0, 0, 230)
    love.graphics.rectangle("fill", 0, 0, 1200, 600)
    for pl = 1, #players do
       love.graphics.setColor(255,255,255,20)
@@ -57,15 +59,26 @@ end
 function refreshMap()
    love.graphics.setCanvas(mapcanvas)
    mapcanvas:clear()
+   for i=1, #players do players[i].objectcanvas:clear() end
+   
    for y=1, #map do
       for x=1, #map[y] do
          if map[y][x] == "#" then
-            love.graphics.setColor(55,55,55)
+            love.graphics.setColor(99,99,99)
             love.graphics.rectangle("fill", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
          end
          if map[y][x] == "c" then
             love.graphics.setColor(255,255,255)
             love.graphics.draw(imgCherry, x * ScaleX, y * ScaleY)
+         end
+         if map[y][x] == "r" or map[y][x] == "y" or map[y][x] == "b" then
+            love.graphics.setColor(111,111,111)
+            love.graphics.draw(imgStar, (x+0.5) * ScaleX, (y+0.5) * ScaleY)
+            for i = 1, #players do if map[y][x] == players[i].player:sub(1,1) then
+                  love.graphics.setCanvas(players[i].objectcanvas) love.graphics.setColor(players[i].color)
+                  love.graphics.draw(imgStar, (x+0.5) * ScaleX, (y+0.5) * ScaleY)
+                  love.graphics.setCanvas(mapcanvas)
+            end end
          end
       end
    end
@@ -76,15 +89,6 @@ function love.draw()
    -- love.graphics.print("Hello World", 400, 300)
    love.graphics.setBlendMode('alpha')
 
-   for y=1, #map do
-      for x=1, #map[y] do
-         if map[y][x] == "c" then
-            love.graphics.setColor(255,255,255)
-            love.graphics.draw(imgCherry, (x+0.5) * ScaleX, (y+0.5) * ScaleY)
-         end
-      end
-   end
-   
    love.graphics.setColor(255,255,255,255)
    love.graphics.draw(mapcanvas)
    love.graphics.draw(darkener)
@@ -123,7 +127,6 @@ function movePlayer(idx, dX, dY)
    end
    players[idx].tx = newX
    players[idx].ty = newY
-   refreshDarkener()
    return true
 end
 
@@ -132,17 +135,25 @@ function love.update(dt)
    timerinterval = timerinterval + dt
    if timerinterval > 0.05 then
       timerinterval = timerinterval - 0.05
-      if love.keyboard.isDown("up") then
-         movePlayer(CP, 0, -1)   players[CP].direction = 1.5
+      local dx,dy=0,0
+      if love.keyboard.isDown("up") or love.keyboard.isDown("w") then
+         dy = dy - 1
       end
-      if love.keyboard.isDown("down") then
-         movePlayer(CP, 0, 1)   players[CP].direction = 0.5
+      if love.keyboard.isDown("down") or love.keyboard.isDown("s") then
+         dy = dy + 1
       end
-      if love.keyboard.isDown("left") then
-         movePlayer(CP, -1, 0)   players[CP].direction = 1
+      if love.keyboard.isDown("left") or love.keyboard.isDown("a") then
+         dx = dx - 1
       end
-      if love.keyboard.isDown("right") then
-         movePlayer(CP, 1, 0)   players[CP].direction = 0
+      if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
+         dx = dx + 1
+      end
+      if dx ~= 0 or dy ~= 0 then
+         movePlayer(CP, dx, 0)
+         movePlayer(CP, 0, dy)
+         refreshDarkener()
+         players[CP].direction = 0.5-(math.atan2(dx, dy)/math.pi)
+         print(math.atan2(dx,dy), math.atan2(dy,dx))
       end
    end
 end
