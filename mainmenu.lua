@@ -39,7 +39,7 @@ function mainmenu:enter()
   str="Exit"
   addMenuElement(str,canvasWidth-300,canvasHeight-30,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
 
-  local x,y
+  local x,ysizeX
   for x=0,9-1,1 do
     for y=0,2-1,1 do
       str=(y*9)+x+1
@@ -53,14 +53,15 @@ end
 
 menuElement = {}
 menuElementCt=1;
-function addMenuElement(text,x,y,sx,sy,font)
+function addMenuElement(text,x,y,sx,sy,font,evt)
   local o={
     txt=text,
     font=font,
     posX=x,
     posY=y,
     sizeX=sx,
-    sizeY=sz,
+    sizeY=sy,
+    event=evt
   }
 
   menuElement[menuElementCt]=o
@@ -71,7 +72,7 @@ function testHit(posX,posY)
   for x=1,menuElementCt-1,1 do
     local v=menuElement[x]
     
-    if ((posX-v.posX>=0) and (posX-v.posX<=sizeX) and (posY-v.posY>=0) and (posY-v.posY<=sizeY)) then
+    if ((posX-v.posX>=0) and (posX-v.posX<=v.sizeX) and (posY-v.posY>=0) and (posY-v.posY<=v.sizeY)) then
       return v
     end
   end
@@ -101,12 +102,14 @@ function mainmenu:draw()
   renderMenuElement()
 end
 
-function handleMouseClick()
-  local h=testHit(love.mouse.getX,love.mouse.getY)
+
+function mainmenu:mousereleased()
+  local h=testHit(love.mouse.getX(),love.mouse.getY())
 
   if (h~=nil) then
     if (h.event~=nil) then
       h.event(h)
+      print(h.txt)
     end
   end
 end
