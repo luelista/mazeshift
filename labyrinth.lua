@@ -79,6 +79,7 @@ function labyrinth:enter(oldstate, level)
       mapScript={}
    end
 
+   darkeneralpha = 150
    stepinterval = 0.05
     
    if (mapScript.onLoad~=nil) then
@@ -131,7 +132,7 @@ function refreshDarkener()
    love.graphics.setCanvas(darkener)
    darkener:clear()
    love.graphics.setBlendMode('alpha')
-   love.graphics.setColor(0, 0, 0, 150)
+   love.graphics.setColor(0, 0, 0, darkeneralpha)
    love.graphics.rectangle("fill", 0, 0, 1200, 600)
    love.graphics.setBlendMode('multiplicative')
    for pl = 1, #players do

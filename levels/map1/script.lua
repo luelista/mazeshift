@@ -1,5 +1,9 @@
 local maphandler = {}
 
+function maphandler:onLoad()
+   darkeneralpha = 220
+end
+
 function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
    print("onCollision", direction, mapchar, player, tx, ty, playerIndex)
 
