@@ -50,6 +50,12 @@ function labyrinth:enter(oldstate, level)
       end
       table.insert(map, mapline)
    end
+
+   mapScript=require("levels.map"..labyrinth.current_level..".lua")
+   if (mapScript==nil) then
+      mapScript={}
+   end
+
    refreshDarkener()
    refreshMap()
 end
@@ -203,10 +209,11 @@ function onCollision(idx, firstColl)
       sndBackgroundmusic:pause() sndCredit:play()
       return " "
    end
+
+   players[idx].collision=true
+   players[idx].collisionFrom=firstColl
+
    return firstColl
-end
-function resetCollision()
-   karteAufdecken = false
 end
 
 
@@ -284,7 +291,19 @@ function labyrinth:update(dt)
          players[CP].direction = 0.5-(math.atan2(dx, dy)/math.pi)
          players[CP].directionvector = {dx,dy}
          
+         local colCached=players[CP].colliding
+         local colFCached=players[CP].collidingFrom
          onCheckCollision9(CP)
+
+         if (colCached~=players[CP].collision) then
+            if (mapScript[players[CP].collidingFrom]~=nil) then
+               if (colCached) then
+                  mapScript[players[CP].collidingFrom]("leave",players[CP].collidingFrom,players[CP],players[CP].tx,players[CP].ty,CP)
+               else
+                  mapScript[players[CP].collidingFrom]("enter",players[CP].collidingFrom,players[CP],players[CP].tx,players[CP].ty,CP)
+               end
+            end
+         end
          
          refreshDarkener()
          --print(math.atan2(dx,dy), math.atan2(dy,dx))
