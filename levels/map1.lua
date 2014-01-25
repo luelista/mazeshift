@@ -3,7 +3,7 @@ local maphandler = {}
 function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
    print("onCollision", direction, mapchar, player, tx, ty, playerIndex)
 
-   if mapchar == "t" then playerDied() end
+   if mapchar == "t" and direction == "enter" then playerDied() end
 
 end
 
