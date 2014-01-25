@@ -1,12 +1,5 @@
---[[
-Simple Menu Library
-by nkorth
+-- -*- compile-command: "\"c:/Program Files/LOVE/love.exe\" ."; -*-
 
-Requires: love2d
-Recommended: hump.gamestate
-
-Public Domain - feel free to hack and redistribute this as much as you want.
-]]--
 return {
 	new = function()
 		return {
@@ -15,6 +8,7 @@ return {
 			menutop = 100,
       menuheight = 20,
       mouselasty = 0,
+      menuthreshold = 5,
       add = function(self, txt, act)
          table.insert(self.menuitems, {tx = txt, a = act})
       end,
@@ -39,7 +33,7 @@ return {
 			end,
       
       getMenuByYPos = function (self, ypos)
-         local menuitem = (ypos - self.menutop) / self.menuheight
+         local menuitem = (ypos + self.menuthreshold - self.menutop) / self.menuheight
          if menuitem >= 1 and menuitem < #self.menuitems+1 then
             return math.floor(menuitem)
          end

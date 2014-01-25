@@ -1,3 +1,4 @@
+-- -*- compile-command: "\"c:/Program Files/LOVE/love.exe\" ."; -*-
 
 mainmenu = {}
 
@@ -28,28 +29,13 @@ function mainmenu:enter()
   --addMenuElement(str,fromCenter(fntTitle:getWidth(str)),20,fntTitle:getWidth(str),fntTitle:getHeight(str),fntTitle)
 
   --str="Main Menu"
-  str = "SELECT YOUR LEVEL"
-  addMenuElement(str,fromCenter(fntDefault:getWidth(str)),55,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,1)
+  --str = "SELECT YOUR LEVEL"
+  --addMenuElement(str,fromCenter(fntDefault:getWidth(str)),55,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
 
-  str="Start"
-  addMenuElement(str,fromCenter(fntDefault:getWidth(str)),100,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
-  
-  str="Levels"
-  addMenuElement(str,fromCenter(fntDefault:getWidth(str)),180,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault)
-
-  str="Toogle Sound: ON"
-  addMenuElement(str,fromCenter(800),canvasHeight-70,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuToogleMusic)
-
-  str="Toogle Fullscreen: OFF"
-  addMenuElement(str,fromCenter(700),canvasHeight-40,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuToogleFullscreen)
-
-
-  str="Back"
-  addMenuElement(str,canvasWidth-300,canvasHeight-30,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuQuit)
 
   local x,ysizeX
-  for x=0,9-1,1 do
     for y=0,2-1,1 do
+  for x=0,9-1,1 do
       str=(y*9)+x+1
       addMenuElement(str,
         fromCenter(str)+((x-4)*80),
@@ -57,10 +43,15 @@ function mainmenu:enter()
         fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,(y*9)+x+1)
     end
   end
+
+  str=" Back"
+  addMenuElement(str,canvasWidth-300,canvasHeight-30,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuQuit)
+
 end
 
 menuElement = {}
 menuElementCt=1;
+menuElementActive=1
 function addMenuElement(text,x,y,sx,sy,font,evt,info)
   local o={
     txt=text,
@@ -70,7 +61,8 @@ function addMenuElement(text,x,y,sx,sy,font,evt,info)
     sizeX=sx,
     sizeY=sy,
     event=evt,
-    info=info
+    info=info,
+    index=menuElementCt
   }
 
   menuElement[menuElementCt]=o
@@ -95,38 +87,66 @@ function renderMenuElement()
   local x
   for x=1,menuElementCt-1,1 do
     local v=menuElement[x]
+    if x == menuElementActive then love.graphics.rectangle("line", v.posX-10, v.posY-10, v.sizeX+20, v.sizeY+20) end
     drawLabel(v.txt,v.posX,v.posY,v.font)
   end
 end
 
 function mainmenu:draw()
-  love.graphics.setColor(255,0,0);
-  love.graphics.circle( "fill", canvasWidth/4*1, canvasHeight/5*4, canvasWidth/5, canvasHeight/5)
-  
-  love.graphics.setColor(255,255,0);
-  love.graphics.circle( "fill", canvasWidth/1*1, canvasHeight/1*0, canvasWidth/4, canvasHeight/4)
-  
-  love.graphics.setColor(0,0,255);
-  love.graphics.circle( "fill", canvasWidth/3*2, canvasHeight/3*2, canvasWidth/8, canvasHeight/8)
+   love.graphics.setColor(255,0,0);
+   love.graphics.circle( "fill", canvasWidth/4*1, canvasHeight/5*4, canvasWidth/5, canvasHeight/5)
+   
+   love.graphics.setColor(255,255,0);
+   love.graphics.circle( "fill", canvasWidth/1*1, canvasHeight/1*0, canvasWidth/4, canvasHeight/4)
+   
+   love.graphics.setColor(0,0,255);
+   love.graphics.circle( "fill", canvasWidth/3*2, canvasHeight/3*2, canvasWidth/8, canvasHeight/8)
+   
+   renderMenuElement()
 
-  renderMenuElement()
+   love.graphics.setColor(255,255,255);
+   love.graphics.print("SELECT YOUR LEVEL", (canvasWidth-fntDefault:getWidth("SELECT YOUR LEVEL"))/2, 100)
 end
 
+mainmenu.lastx = 0   mainmenu.lasty = 0
+function mainmenu:update(dt)
+   local mousex,mousey = love.mouse.getX(), love.mouse.getY()
+   if mousex == self.lastx and mousey == self.lasty then return end
+   local hittest = testHit(mousex,mousey)
+   if hittest ~= nil then menuElementActive = hittest.index end
+   self.lastx = mousex      self.lasty = mousey
+end
 
-function mainmenu:mousereleased()
-  local h=testHit(love.mouse.getX(),love.mouse.getY())
-
-  if (h~=nil) then
-    if (h.event~=nil) then
-      h.event(h)
-      print(h.txt)
+function mainmenu:onmenuevent(menuitem)
+  if (menuitem~=nil) then
+    if (menuitem.event~=nil) then
+      menuitem.event(menuitem)
+      --print(menuitem.txt)
     end
   end
 end
 
+function mainmenu:mousereleased()
+  local h=testHit(love.mouse.getX(),love.mouse.getY())
+  self:onmenuevent(h)
+end
+
 function mainmenu:keypressed(key)
-   if key == " " then --space
-      Gamestate.switch(labyrinth)
+   if key == " " or key == "return" then --space
+      local h = menuElement[menuElementActive]
+      self:onmenuevent(h)
+   elseif key == "down" then
+      menuElementActive = menuElementActive + 9
+      if menuElementActive > #menuElement then menuElementActive = #menuElement end
+   elseif key == "up" then
+      menuElementActive = menuElementActive - 9
+      if menuElementActive < 1 then menuElementActive = 1 end
+   elseif key == "left" then
+      menuElementActive = menuElementActive - 1
+      if menuElementActive < 1 then menuElementActive = 1 end
+   elseif key == "right" then
+      menuElementActive = menuElementActive + 1
+      if menuElementActive > #menuElement then menuElementActive = #menuElement end
    elseif key == "escape" then
       Gamestate.switch(mainmenu_old)
    end
