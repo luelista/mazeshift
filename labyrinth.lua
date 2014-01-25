@@ -356,8 +356,6 @@ function round(num, idp)
 end
 
 function movePlayer(idx, dX, dY)
-   if labyrinth.stopgame then return end
-
    local p = players[idx]
    local newX = p.tx + dX
    local newY = p.ty + dY
@@ -375,6 +373,8 @@ end
 
 timerinterval = 0
 function labyrinth:update(dt)
+   if labyrinth.stopgame then return end
+   
    timerinterval = timerinterval + dt
    playtimesec = playtimesec + dt
    if timerinterval > 0.05 then
