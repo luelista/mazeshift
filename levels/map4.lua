@@ -11,6 +11,30 @@ function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
       setTimeout(function() labyrinth.show_map = false end, 1)
       return " "
    end
+
+   local rx=13
+   local ry=55
+   local rx2=49
+   local ry2=25
+   if maphandler == "x" then
+      if direction=="enter" then
+         mapFill(rx,ry,"g")
+         mapFill(rx2,ry2,"g")
+      else
+         mapFill(rx,ry,"#")
+      end
+   end
+
+   local yx=49
+   local yy=23
+   if maphandler == "y" then
+      if direction=="enter" then
+         mapFill(yx,yy,"g")
+         mapFill(yx,yy,"g")
+      else
+         mapFill(yx,yy,"#")
+      end
+   end
    
 end
 
