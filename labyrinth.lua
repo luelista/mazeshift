@@ -57,6 +57,10 @@ function labyrinth:enter(oldstate, level)
       mapScript={}
    end
 
+   if (mapScript.onLoad~=nil) then
+      mapScript:onLoad()
+   end
+
    refreshDarkener()
    refreshMap()
 end
