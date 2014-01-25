@@ -11,6 +11,7 @@ end
 
 function credits:draw()
    love.graphics.setFont(fntDefault);
+   love.graphics.setColor(255, 255, 255)
     -- draw text "Hello world!" at left: 100, top: 200
    
    if blinkyvis then love.graphics.print("C R E D I T S", 100, 50) end

@@ -7,7 +7,9 @@ function most_epic_win:enter()
 end
 
 function most_epic_win:draw()
-   love.graphics.setFont(fntTitle);
+   love.graphics.setFont(fntTitle)
+   love.graphics.setColor(111, 255, 111)
+   
     -- draw text "Hello world!" at left: 100, top: 200
    
    if blinkyvis then love.graphics.print("You won ALL THE LEVELS!", 300, 290) end

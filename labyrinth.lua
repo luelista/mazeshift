@@ -5,6 +5,7 @@ labyrinth.current_level = nil
 
 fntHuge = love.graphics.newFont(fontFilename, 48)
 
+labyrinth.credits = 100
 
 levelFolder=nil
 function labyrinth:enter(oldstate, level)
@@ -12,7 +13,8 @@ function labyrinth:enter(oldstate, level)
    
    labyrinth.current_level = level
    labyrinth.stopgame = false
-   labyrinth.credits = 100
+   
+   labyrinth.state = "play"
    
    levelFolder="levels/map" .. level .. "/"
    if love.filesystem.exists(levelFolder.."map.txt") == false then
@@ -38,6 +40,8 @@ function labyrinth:enter(oldstate, level)
    
    if (love.filesystem.exists(levelFolder.."bg.png")) then
       levelBg=love.graphics.newImage(levelFolder.."bg.png")
+      levelBg:setWrap("repeat", "repeat")
+      levelBgQuad = love.graphics.newQuad( 0,0, canvasWidth,canvasHeight, levelBg:getWidth(),levelBg:getHeight() )
    else
       levelBg=nil
    end
@@ -88,6 +92,10 @@ function labyrinth:enter(oldstate, level)
    refreshMap()
 end
 
+function lvlimg(nam)
+   return love.graphics.newImage(levelFolder..nam..".png")
+end
+
 function labyrinth:credit(num)
    self.credits = self.credits + num
    
@@ -123,7 +131,7 @@ function refreshDarkener()
    love.graphics.setCanvas(darkener)
    darkener:clear()
    love.graphics.setBlendMode('alpha')
-   love.graphics.setColor(0, 0, 0, 238)
+   love.graphics.setColor(0, 0, 0, 150)
    love.graphics.rectangle("fill", 0, 0, 1200, 600)
    love.graphics.setBlendMode('multiplicative')
    for pl = 1, #players do
@@ -148,7 +156,7 @@ function refreshMap()
    mapcanvas:clear()
 
    if (levelBg~=nil) then
-      love.graphics.draw(levelBg,0,0);
+      love.graphics.draw(levelBg, levelBgQuad, 0,0, 0, 1,1);
    end
 
    for i=1, #players do players[i].objectcanvas:clear() end
@@ -157,12 +165,12 @@ function refreshMap()
       for x=1, #map[y] do
          --love.graphics.setColor(0,255,0)
          --love.graphics.rectangle("fill", x*ScaleX, y*ScaleY, 1, 1)
-         if map[y][x] == "#" then
-            love.graphics.setColor(99,99,99)
-            love.graphics.rectangle("fill", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
-         elseif map[y][x] == "." then
+         if map[y][x] == "." or (map[y][x] == "#" and labyrinth.disable_hittest) then
             love.graphics.setColor(99,99,99)
             love.graphics.rectangle("line", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
+         elseif map[y][x] == "#" then
+            love.graphics.setColor(99,99,99)
+            love.graphics.rectangle("fill", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
          elseif map[y][x] == "c" then
             love.graphics.setColor(255,255,255)
             love.graphics.draw(imgCherry, x * ScaleX, y * ScaleY)
@@ -266,11 +274,13 @@ function playerDied(msg)
    livesremaining = livesremaining - 1
    if livesremaining > 0 then
       if msg == nil then msg = "YOU WERE KILLED" end
-      setHugeoverlay(msg, livesremaining .. " live(s) remaining", 1)
-      resetPlayer(CP)
+      setHugeoverlay(msg, livesremaining .. " live(s) remaining", 1.5)
+      local pl = CP
+      labyrinth.stopgame = true
+      setTimeout(function() resetPlayer(pl) labyrinth.stopgame = false end, 1.5)
    else
       setHugeoverlay("GAME OVER", "press SPACE to try again")
-      labyrinth.stopgame = true
+      labyrinth.stopgame = true  labyrinth.state = "dead"  labyrinth.credits = 100
    end
 end
 
@@ -284,14 +294,14 @@ function printInfobar()
    love.graphics.draw(imgCherry, 70, top-2)
    love.graphics.print(string.format("%d / %d", cherrysfound, cherrystotal), 100, top)
 
-   love.graphics.print(string.format("Level %03d", labyrinth.current_level), 180, top)
+   love.graphics.print(string.format("Level %03d", labyrinth.current_level), 240, top)
    
-   love.graphics.draw(imgLife, 295, top-4)
-   love.graphics.print(string.format("%02d", livesremaining), 320, top)
+   love.graphics.draw(imgLife, 395, top-4)
+   love.graphics.print(string.format("%02d", livesremaining), 420, top)
    
    love.graphics.setColor(255,244,155,255)
-   love.graphics.draw(imgStar, 480, top-4)
-   love.graphics.print(string.format("%05d", labyrinth.credits), 505, top)
+   love.graphics.draw(imgStar, 580, top-4)
+   love.graphics.print(string.format("%05d", labyrinth.credits), 605, top)
 end
 
 function onCollision(idx, firstColl, cx, cy)
@@ -301,7 +311,7 @@ function onCollision(idx, firstColl, cx, cy)
       cherrysfound = cherrysfound + 1
       if cherrysfound == cherrystotal then
          setHugeoverlay("EPIC WIN!", "  press SPACE for next level\n\npress ESCAPE to return to menu")
-         labyrinth.stopgame = true
+         labyrinth.stopgame = true   labyrinth.state = "win"
          sndBackgroundmusic:pause()
          sndEpicWin:setVolume(2)
          sndEpicWin:play()
@@ -313,7 +323,7 @@ function onCollision(idx, firstColl, cx, cy)
    
    players[idx].collision = firstColl
    players[idx].collisionX = cx  players[idx].collisionY = cy
-   if mapScript.imagemap ~= nil and mapScript.imagemap[firstColl] ~= nil and mapScript.imagemap[firstColl].consume then return " " end
+   if mapScript.imagemap ~= nil and mapScript.imagemap[firstColl] ~= nil and mapScript.imagemap[firstColl].consume and (mapScript.imagemap[firstColl].player == nil or players[idx].player == mapScript.imagemap[firstColl].player) then return " " end
 
    return firstColl
 end
@@ -337,6 +347,9 @@ end
 
 -- returns '#' if any element is '#', otherwise returns first non-space, otherwise returns space
 function testMap(x, y, player)
+   if y < 1 or y >= #map or x < 1 or x >= #map[y] then return false end
+   if labyrinth.disable_hittest then return true end
+   
    coll = { map[y][x], map[y+1][x], map[y+1][x+1], map[y][x+1] }
    res = " "
    for i = 1, #coll do
@@ -365,14 +378,17 @@ function fillMap(px,py,char,oldChar)
 
    if (ref) then
       refreshMap()
+      killOnHit()
+   end
+end
 
-      local i
-      for i=1,#players do
-         local x=testMap(players[i].tx, players[i].ty,players[i])
-         if (x==false) then
-            CP=i
-            playerDied()
-         end
+function killOnHit()
+   local i
+   for i=1,#players do
+      local x=testMap(players[i].tx, players[i].ty,players[i])
+      if (x==false) then
+         CP=i
+         playerDied("YOU WERE WALLED IN")
       end
    end
 end
@@ -448,9 +464,9 @@ end
 
 function labyrinth:keypressed(key)
    print(labyrinth.stopgame,livesremaining,labyrinth.current_level)
-   if labyrinth.stopgame and (key == " " or key == "return") then
-      if livesremaining == 0 then labyrinth:enter("labyrinth",labyrinth.current_level) 
-      else labyrinth:enter("labyrinth",labyrinth.current_level + 1) end
+   if labyrinth.state ~= "play" and (key == " " or key == "return") then
+      if labyrinth.state == "dead" then labyrinth:enter("labyrinth",labyrinth.current_level) 
+      elseif labyrinth.state == "win" then labyrinth:enter("labyrinth",labyrinth.current_level + 1) end
       return
    end
    

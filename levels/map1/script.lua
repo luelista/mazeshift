@@ -5,12 +5,17 @@ function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
 
    if mapchar == "t" and direction == "enter" then playerDied() end
    
-   
-   if mapchar == "y" then
-      sndBackgroundmusic:pause() sndCredit:play() labyrinth.show_map=true
-      setTimeout(function() labyrinth.show_map = false end, 1)
-      return " "
+   if direction == "enter" and (mapchar == "r" or mapchar == "y" or mapchar == "b") and player.player == mapchar then
+      sndBackgroundmusic:pause() sndCredit:play() labyrinth:credit(100)
+      
+      if mapchar == "y" then
+         setTimeout(function() labyrinth.show_map = false end, 1) labyrinth.show_map=true
+      end
+      if mapchar == "b" then
+         setTimeout(function() labyrinth.disable_hittest = false killOnHit() refreshMap() end, 3)  labyrinth.disable_hittest = true refreshMap()
+      end
    end
+   
    
 end
 

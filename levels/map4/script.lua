@@ -42,10 +42,11 @@ function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
    
 end
 
+
 maphandler.imagemap = {
-   r = { imgStar, player="r", inactiveColor = {255,255,255,255} },
-   b = { imgStar, player="b", inactiveColor = {255,255,255,255} },
-   a = { imgStar,             }
+   r = { lvlimg("whatsthis"), player="r", inactiveColor = {255,255,255,255} },
+   b = { lvlimg("whatsthis"), player="b", inactiveColor = {255,255,255,255} },
+   a = { lvlimg("whatsthis"),             }
 }
 
 maphandler.players = {
