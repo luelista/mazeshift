@@ -248,6 +248,32 @@ function testMap(x, y)
    return res
 end
 
+function fillMap(px,py,char,oldChar)
+   if (oldChar==nil) then
+      oldChar=map[py,px]
+   end
+
+   if (map[py,px]==oldChar) then
+      map[py,px]=char
+   else
+      return
+   end
+
+   if (px~=0) then
+      fillMap(px-1,py  ,char,oldChar)
+   end
+   if (px~=#map[px])
+      fillMap(px-1,py  ,char,oldChar)
+   end
+
+   if (py~=0) then
+      fillMap(px  ,py-1,char,oldChar)
+   end
+   if (py~=#map)
+      fillMap(px  ,py+1,char,oldChar)
+   end
+end
+
 function round(num, idp)
    local mult = 10^(idp or 0)
    return math.floor(num * mult + 0.5) / mult
