@@ -5,6 +5,8 @@ labyrinth.current_level = nil
 
 fntHuge = love.graphics.newFont(fontFilename, 48)
 
+
+levelFolder=nil
 function labyrinth:enter(oldstate, level)
    if level == nil then return end
    
@@ -12,7 +14,8 @@ function labyrinth:enter(oldstate, level)
    labyrinth.stopgame = false
    labyrinth.credits = 100
    
-   if love.filesystem.exists("levels/map" .. level .. ".txt") == false then
+   levelFolder="levels/map" .. level .. "/"
+   if love.filesystem.exists(levelFolder.."map.txt") == false then
       Gamestate.switch(most_epic_win)
       return
    end
@@ -33,8 +36,10 @@ function labyrinth:enter(oldstate, level)
    sndCredit = love.audio.newSource("sound/square-sweep-up.wav", "static")
    sndEpicWin = love.audio.newSource("sound/square-fanfare.wav", "static")
    
-   if (love.filesystem.exists("levels/map"..labyrinth.current_level.."bg.png")) then
-      levelBg=love.graphics.newImage("levels/map"..labyrinth.current_level.."bg.png")
+   if (love.filesystem.exists(levelFolder.."bg.png")) then
+      levelBg=love.graphics.newImage(levelFolder.."bg.png")
+   else
+      levelBg=nil
    end
 
    CP = 1
@@ -56,7 +61,7 @@ function labyrinth:enter(oldstate, level)
    
    print("Hello, World!")
    map = {}
-   for line in love.filesystem.lines("levels/map" .. labyrinth.current_level .. ".txt") do
+   for line in love.filesystem.lines(levelFolder.."map.txt") do
       local mapline = {}
       for charr in string.gmatch(line, ".") do
          table.insert(mapline, charr)
@@ -65,7 +70,7 @@ function labyrinth:enter(oldstate, level)
       table.insert(map, mapline)
    end
 
-   mapScript=require("levels/map"..labyrinth.current_level.."")
+   mapScript=require(levelFolder.."script")
    if (mapScript==nil) then
       mapScript={}
    end
@@ -327,19 +332,24 @@ function onCheckCollision9(idx)
 end
 
 -- returns '#' if any element is '#', otherwise returns first non-space, otherwise returns space
-function testMap(x, y)
+function testMap(x, y, player)
    coll = { map[y][x], map[y+1][x], map[y+1][x+1], map[y][x+1] }
    res = " "
    for i = 1, #coll do
-      if coll[i] == "#" then return "#" end
+      if coll[i] == "#" then return false end
       if coll[i] ~= " " then res = coll[i] end
    end
-   return res
+
+   return (not (string.match(res, "[A-Z]") ~= nil and res:lower() ~= player.player))
 end
 
 function fillMap(px,py,char,oldChar)
    if char == oldChar then return end
-   if (oldChar==nil) then oldChar=map[py][px] end
+   local ref=false
+   if (oldChar==nil) then
+      oldChar=map[py][px]
+      ref=true
+   end
 
    if (map[py][px]==oldChar) then map[py][px]=char else return end
 
@@ -348,6 +358,19 @@ function fillMap(px,py,char,oldChar)
 
    if (py~=1) then fillMap(px, py-1, char, oldChar) end
    if (py~=#map) then fillMap(px, py+1, char, oldChar) end
+
+   if (ref) then
+      refreshMap()
+
+      local i
+      for i=1,#players do
+         local x=testMap(players[i].tx, players[i].ty,players[i])
+         if (x==false) then
+            CP=i
+            playerDied()
+         end
+      end
+   end
 end
 
 function round(num, idp)
@@ -359,9 +382,9 @@ function movePlayer(idx, dX, dY)
    local p = players[idx]
    local newX = p.tx + dX
    local newY = p.ty + dY
-   local firstColl = testMap(math.floor(newX), math.floor(newY))
+   local validPos = testMap(math.floor(newX), math.floor(newY),p)
    
-   if firstColl == "#" or (string.match(firstColl, "[A-Z]") ~= nil and firstColl:lower() ~= p.player) then
+   if (not validPos) then
       if dX ~= 0 then p.tx = round(p.tx, 0) else p.ty = round(p.ty, 0) end
       return false
    end

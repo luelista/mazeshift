@@ -1,0 +1,53 @@
+######################################################################################################
+#             a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a                  #
+#                                                                                                    #
+#             Y r r r r r r b b a a a a a                       b b b b b b b b b b                  #
+#             Y                                                                                      #
+#             Y r r r r r r r b b b a a b                     b b b b b b b b b b                    #
+#             Y                                                                                      #
+#             Y r a a a a r r r b b b b b                           b b b b b b b                    #
+#             Y                           Y Y Y Y Y Y Y Y                                            #
+#             a a a a a a a a a a a a a a Y Y Y Y Y Y Y Y a a a a a a a a a a a a a                  #
+#                                                                                                    #
+#             a a a a a a a a a a a a a a a            ###a a a a a a a                              #
+#                                                    ####                             x              #
+#               a a a a a a a a a a a a a a        #### b b b a a a a a                              #
+#                                                ###                                                 #
+#                 a a a a a a a a a a a a a a a a a b b b b b a a a a                                #
+#                                                                                                    #
+#                       a a a a a a a a a a a a a a a b b b b a a                                    #
+#                                                                                                    #
+#                       a a a a a a a a                   b b a a                                    #
+#                                                                                                    #
+#                   a a a a a a a a                             a                                    #
+#                     a a a a a a a a ########################a                                      #
+#                     a a a a a a a a                         a                                      #
+#                                 a a a a a a a a ############a                                      #
+#                                                                                                    #
+#                                     a a r r r a a b b b b b a                                      #
+#                                                                                                    #
+#                                     a r r r r r b b b b b b a                                      #
+#                                                                                                    #
+#                                     a r r r r r b a a a a a                                        #
+#                                                                                                    #
+#                                       a r r r r r a a a a a                                        #
+#                                                                                                    #
+#                                       a a r r r b b b b b b a                                      #
+#                                                                                                    #
+#       y                               a a a r r r b b b b b a                                      #
+#                                                                                                    #
+#                                       a r r r r b a a a b b a                                      #
+#                                                                                                    #
+#                                       a r r r r b b a a b b a a a                                  #
+#                                                                                                    #
+#                                       a       Y Y Y         a a a a a a a a a a              a a a #
+#                                              Y     Y                                               #
+#                                       a      Y  c  Y        a a a a a a a a a a a a a a a a a a a  #
+#                                              Y     Y                                               #
+#                                     a a a a a Y Y Y a a a a a a a a a a a a a a a a a a a          #
+#                                                                                                    #
+#                               a a a a a a a a a a a a a a a a a                                    #
+#                                                                                                    #
+#                       a a a a a a a a a a a a a a a a a a a a a                                    #
+#                                                                                                    #
+######################################################################################################
