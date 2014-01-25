@@ -18,4 +18,10 @@ maphandler.imagemap = {
    k = { love.graphics.newImage("levels/map2_k.png") }
 }
 
+maphandler.players = {
+   { player = "red", x = 3, y = 3, directionvector = {1,0} },
+   { player = "yellow", x = 30, y = 3, directionvector = {-1,0} },
+   { player = "blue", x = 3, y = 15, directionvector = {0,-1} },
+}
+
 return maphandler

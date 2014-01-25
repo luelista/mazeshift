@@ -10,6 +10,7 @@ function labyrinth:enter(oldstate, level)
    
    labyrinth.current_level = level
    labyrinth.stopgame = false
+   labyrinth.credits = 100
    
    if love.filesystem.exists("levels/map" .. level .. ".txt") == false then
       Gamestate.switch(most_epic_win)
@@ -39,20 +40,20 @@ function labyrinth:enter(oldstate, level)
    CP = 1
    ScaleX = 10
    ScaleY = 10
-   players = {
-      { tx = 3, ty = 3, player = "r", directionvector = {1,0}, speed = 50,
+   default_players = {
+      red = { player = "r", speed = 50,
         form = {0, 0, 20, 0, 20, 20, 0, 20},
         color = {200, 50, 50}, objectcanvas = love.graphics.newCanvas() },
-      { tx = 50, ty = 15, player = "y", directionvector = {0,1}, speed = 50,
+
+      yellow = { player = "y", speed = 50,
         form = {7,0,   14,0,   21,10,   14,20,   7,20,   0,10},
         color = {200, 250, 50}, objectcanvas = love.graphics.newCanvas() },
-      { tx = 7, ty = 46, player = "b", directionvector = {-1,0}, speed = 50,
+
+      blue = { player = "b", speed = 50,
         form = {0, 0, 0, 20, 20, 10},
         color = {50, 50, 250}, objectcanvas = love.graphics.newCanvas() }
    }
-   for i=1,#players do
-      players[i].direction=0.5-math.atan2(players[i].directionvector[1],players[i].directionvector[2]) / math.pi
-   end
+   
    print("Hello, World!")
    map = {}
    for line in love.filesystem.lines("levels/map" .. labyrinth.current_level .. ".txt") do
@@ -68,14 +69,45 @@ function labyrinth:enter(oldstate, level)
    if (mapScript==nil) then
       mapScript={}
    end
-
+   
    if (mapScript.onLoad~=nil) then
       mapScript:onLoad()
    end
 
+   resetPlayers()
    refreshDarkener()
    refreshMap()
 end
+
+function labyrinth:credit(num)
+   self.credits = self.credits + num
+   
+end
+
+function resetPlayer(idx)
+   local player = players[i]
+   player.directionvector = mapScript.players[i].directionvector 
+   player.tx = mapScript.players[i].x 
+   player.ty = mapScript.players[i].y 
+
+   player.direction=0.5-math.atan2(player.directionvector[1],player.directionvector[2]) / math.pi
+end
+
+function resetPlayers()
+   players = {}
+   for i=1,#mapScript.players do
+      local player = default_players[mapScript.players[i].player]
+      
+      player.directionvector = mapScript.players[i].directionvector 
+      player.tx = mapScript.players[i].x 
+      player.ty = mapScript.players[i].y 
+      
+      player.direction=0.5-math.atan2(player.directionvector[1],player.directionvector[2]) / math.pi
+      
+      table.insert(players, player)
+   end
+end
+
 
 
 function refreshDarkener()
@@ -94,7 +126,7 @@ function refreshDarkener()
       --love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
       love.graphics.draw(imgViewangle, p.tx*ScaleX+ScaleX, p.ty*ScaleY,  (p.direction-0.25)*math.pi, 1, 1, 30, 30)
       p.stencil = function()
-         love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
+         love.graphics.arc("fill", px, py, 220, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
       end
    end
    love.graphics.setCanvas()
@@ -114,8 +146,8 @@ function refreshMap()
    
    for y=1, #map do
       for x=1, #map[y] do
-         love.graphics.setColor(0,255,0)
-         love.graphics.rectangle("fill", x*ScaleX, y*ScaleY, 1, 1)
+         --love.graphics.setColor(0,255,0)
+         --love.graphics.rectangle("fill", x*ScaleX, y*ScaleY, 1, 1)
          if map[y][x] == "#" then
             love.graphics.setColor(99,99,99)
             love.graphics.rectangle("fill", x * ScaleX, y * ScaleY, ScaleX, ScaleY)
@@ -221,10 +253,11 @@ function setHugeoverlay(text, text2, timeout)
    end
 end
 
-function playerDied()
+function playerDied(msg)
    livesremaining = livesremaining - 1
    if livesremaining > 0 then
-      setHugeoverlay("YOU WERE KILLED", livesremaining .. " live(s) remainging", 1)
+      if msg == nil then msg = "YOU WERE KILLED" end
+      setHugeoverlay(msg, livesremaining .. " live(s) remaining", 1)
    else
       setHugeoverlay("GAME OVER", "press SPACE to try again")
       labyrinth.stopgame = true
@@ -245,6 +278,10 @@ function printInfobar()
    
    love.graphics.draw(imgLife, 295, top-4)
    love.graphics.print(string.format("%02d", livesremaining), 320, top)
+   
+   love.graphics.setColor(255,244,155,255)
+   love.graphics.draw(imgStar, 480, top-4)
+   love.graphics.print(string.format("%05d", labyrinth.credits), 505, top)
 end
 
 function onCollision(idx, firstColl)
@@ -263,20 +300,9 @@ function onCollision(idx, firstColl)
       end
       return " "
    end
-   if firstColl == "y" and players[idx].player == "y" then
-      sndBackgroundmusic:pause() sndCredit:play() labyrinth.show_map=true hidemaptimer=10
-      return " "
-   end
-   if firstColl == "r" and players[idx].player == "r" then
-      sndBackgroundmusic:pause() sndCredit:play()
-      return " "
-   end
-   if firstColl == "b" and players[idx].player == "b" then
-      sndBackgroundmusic:pause() sndCredit:play()
-      return " "
-   end
-
+   
    players[idx].collision = firstColl
+   if mapScript.imagemap[firstColl].consume then return " " end
 
    return firstColl
 end
@@ -310,30 +336,15 @@ end
 
 function fillMap(px,py,char,oldChar)
    if char == oldChar then return end
+   if (oldChar==nil) then oldChar=map[py][px] end
 
-   if (oldChar==nil) then
-      oldChar=map[py][px]
-   end
+   if (map[py][px]==oldChar) then map[py][px]=char else return end
 
-   if (map[py][px]==oldChar) then
-      map[py][px]=char
-   else
-      return
-   end
+   if (px~=1) then fillMap(px-1, py, char, oldChar) end
+   if (px~=#map[px]) then fillMap(px+1, py, char, oldChar) end
 
-   if (px~=1) then
-      fillMap(px-1,py  ,char,oldChar)
-   end
-   if (px~=#map[px]) then
-      fillMap(px+1,py  ,char,oldChar)
-   end
-
-   if (py~=1) then
-      fillMap(px  ,py-1,char,oldChar)
-   end
-   if (py~=#map) then
-      fillMap(px  ,py+1,char,oldChar)
-   end
+   if (py~=1) then fillMap(px, py-1, char, oldChar) end
+   if (py~=#map) then fillMap(px, py+1, char, oldChar) end
 end
 
 function round(num, idp)

@@ -47,4 +47,20 @@ function setTimeout(callback, time)
    table.insert(timerlist, { c = callback, t = time })
 end
 
+function toggleBackgroundMusic(self)
+   if (backgroundMusic) then
+      sndBackgroundmusic:pause()   if self ~= nil then self.tx="MUSIC: OFF" end
+   else
+      sndBackgroundmusic:resume()  if self ~= nil then  self.tx="MUSIC: ON" end
+   end
+   backgroundMusic=not backgroundMusic
+end
+
+function toggleFullscreen(self) 
+   local fs=love.window.getFullscreen()
+   if self ~= nil then 
+      if (fs) then self.tx="FULLSCREEN: OFF" else self.tx="FULLSCREEN: ON" end
+   end
+   love.window.setFullscreen(false==fs)  
+end
 

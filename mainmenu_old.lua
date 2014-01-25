@@ -10,19 +10,8 @@ function mainmenu_old:enter()
    mainmenu_old.menu.menuheight = 30
    mainmenu_old.menu:add("P L A Y", function() Gamestate.switch(labyrinth, 1)  end)
    mainmenu_old.menu:add("LEVELS", function() Gamestate.switch(mainmenu)  end)
-   mainmenu_old.menu:add("MUSIC: ON", function(self)
-                            if (backgroundMusic) then
-                               sndBackgroundmusic:pause()    self.tx="MUSIC: OFF"
-                            else
-                               sndBackgroundmusic:resume()   self.tx="MUSIC: ON"
-                            end
-                            backgroundMusic=not backgroundMusic
-   end)
-   mainmenu_old.menu:add("FULLSCREEN: OFF", function(self) 
-                            local fs=love.window.getFullscreen()
-                            if (fs) then  self.tx="FULLSCREEN: OFF"  else  self.tx="FULLSCREEN: ON" end
-                            love.window.setFullscreen(false==fs)  
-   end)
+   mainmenu_old.menu:add("MUSIC: ON", toggleBackgroundMusic)
+   mainmenu_old.menu:add("FULLSCREEN: OFF", toggleFullscreen)
    mainmenu_old.menu:add("CREDITS", function() Gamestate.switch(credits)  end)
    mainmenu_old.menu:add("UIT GAME", function() love.event.quit()  end)
 
