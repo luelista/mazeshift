@@ -1,76 +1,55 @@
 ####################################################################################################
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c c #
-#                                                                                                  #
-#                                                                                                  #
+#                    R                                                    B                        #
+#                    R      r     b    r     b    r    b     r      b     B                        #
+#                    R                                                    B                        #
+#                    R                                                    B                        #
+########################BBBBBBBB###############################RRRRRRRR#############################
+#       B       Y      Y                                                    Y                      #
+#       B       Y  r   Y                                                    Y                      #
+#       B       Y      Y                                                    Y                      #
+#  b    B       Y      Y    b   y    b       b   y     b      b     y       Y    b                 #
+#       B       Y      Y                                                    Y                      #
+#       B       Y  r   Y                                                    Y                      #
+#       B       #      ######################################       y       ###YYYYYYY####RRRRRRR###
+#       B       #      R                                    #               #           #          #
+#       #       #      R                                    #               #           #          #
+#       #       #  r   R   r     r     r                    #       b       #    y      #          #
+#       #       #      R                            y       #               #           #          #
+#  y    #       #      #            ##RRRRRRRR##            R               #           #    y     #
+#       #       #      #            #          #            R       y       #    y      #          #
+#       #       #  r   #            #   r      #    y       R               #           #          #
+#       #       #      #            #          #            R               #           #          #
+#       #       #      #            #          #            #               #           #    y     #
+#       #       #########YYYYYYYY#####RRRRRRRR####YYYYYYYY#######BBBBBBBB######YYYYYYY###          #
+#  y    #       #                   #          #            #               #           #          #
+#       #       #                   #   r      #     y      #       b       #    y      #          #
+#       #       #                   #          #            #               #           #    y     #
+#       #       #########YYYYYYYY#####RRRRRRRR####YYYYYYYY###               #           #          #
+#       #                           #          #                            #          #           #
+#       #                           B          B                            #         #            #
+#  y    #                           B          B                            #              #       #
+#       #                           B          B     y              b       #    b        #        #
+#       #                           B          B                            #            #         #
+#  y    #                           B          B                            #############          #
+#       #       b        b          B    b     B       b            b       #    b                 #
+#       #                           B          B                            #                      #
+#       #                           B          B                            #                      #
+#  y    #                           #          #                            #                      #
+#       ##############################RRRRRRRR#####YYYYYYYY#############################           #
+#                                                                           #                      #
+#                                                                           B                      #
+#  y                                                                        B                      #
+#                                                    y                      B    b                 #
+#                                                                           B                      #
+#                                                                           B                      #
+#   y     y       y       y       b       b        b        b       b       B    b                 #
+#                                                                           B                      #
+#                                                                           #                      #
+#         ############################RRRRRRRR##################################YYYYYY####BBBBBBB###
+#         #                                                                 #           #          #
+#         #                                                                 #           #          #
+#         #                                                       c         #    c      #   c      #
+#         #                                                                 #           #          #
+#         #                                                                 #           #          #
+#         #                                                                 #           #          #
 ####################################################################################################
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
