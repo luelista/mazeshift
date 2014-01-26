@@ -8,6 +8,13 @@ function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
    if mapchar == "l" and direction == "enter" then
       fillMap(40,14, ".")
    end
+   if mapchar == "m" and direction == "enter" then
+      fillMap(50,11,".")
+   end
+   if mapchar == "m" and direction == "leave" then
+      fillMap(50,11,"#")
+   end
+   
 end
 
 maphandler.imagemap = {
@@ -19,9 +26,9 @@ maphandler.imagemap = {
 }
 
 maphandler.players = {
-   { player = "red", x = 3, y = 3, directionvector = {1,0} },
-   { player = "yellow", x = 30, y = 3, directionvector = {-1,0} },
-   { player = "blue", x = 3, y = 15, directionvector = {0,-1} },
+   { player = "red", x = 6, y = 16, directionvector = {1,0} },
+   { player = "yellow", x = 6, y = 23, directionvector = {1,0} },
+   { player = "blue", x = 6, y = 31, directionvector = {1,0} },
 }
 
 return maphandler
