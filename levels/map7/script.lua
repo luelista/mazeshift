@@ -3,7 +3,12 @@ local maphandler = {}
 function maphandler:onLoad()
    stepinterval = 0.1
 
-   pushhelp("")
+   darkeneralpha=255
+   pushhelp("use wasd or arrow key to move")
+
+   players[2].enabled=false
+   players[3].enabled=false
+   
 end
 
 function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
@@ -45,9 +50,9 @@ maphandler.imagemap = {
 }
 
 maphandler.players = {
-   { player = "red", x = 77, y = 8, directionvector = {1,0} },
-   { player = "yellow", x = 41, y = 22, directionvector = {0,-1} },
    { player = "blue", x = 8, y = 6, directionvector = {1,0} },
+   { player = "red", x = 77, y = 8, directionvector = {1,0} },
+   { player = "yellow", x = 41, y = 22, directionvector = {0,-1} }
 }
 
 return maphandler
