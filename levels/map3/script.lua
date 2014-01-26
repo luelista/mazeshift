@@ -28,12 +28,14 @@ maphandler.imagemap = {
    r = { imgStar, consume = true, player="r", inactiveColor = {111,111,111,111} },
    y = { imgStar, consume = true, player="y", inactiveColor = {111,111,111,111} },
    b = { imgStar, consume = true, player="b", inactiveColor = {111,111,111,111} },
-   k = { love.graphics.newImage("images/death.png"), player="r", inactiveColor = {0,0,0,0} }
+   k = { love.graphics.newImage("images/death.png"), player="y", inactiveColor = {0,0,0,0} },
+   f = { love.graphics.newImage("images/empty.png"), player="y", inactiveColor = {0,0,0,0} },
+   l = { love.graphics.newImage("images/death.png"), player="r", inactiveColor = {0,0,0,0} },
 }
 
 maphandler.players = {
-   { player = "red", x = 3, y = 3, directionvector = {1,0} },
-   { player = "yellow", x = 3, y = 7, directionvector = {1,0} },
-   { player = "blue", x = 3, y = 15, directionvector = {1,0} },
+   { player = "yellow", x = 5, y = 10, directionvector = {1,0} },
+   { player = "red", x = 5, y = 35, directionvector = {1,0} },
+   { player = "blue", x = 5, y = 27, directionvector = {1,0} }
 }
 return maphandler

@@ -1,9 +1,9 @@
 local maphandler = {}
 
 local p2x=41
-local p2y=22
+local p2y=27
 
-local p3x=77
+local p3x=90
 local p3y=7
 
 function maphandler:onLoad()
@@ -52,7 +52,7 @@ function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
 
    if mapchar == "x" and direction=="enter" then
       enableBlue()
-      fillMap(41,18,".")
+      fillMap(40,23,".")
 
       unshifthelp()
       pushhelp("Use SPACE or \"2\" to switch to your new player")
@@ -60,22 +60,12 @@ function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
 
    if mapchar == "y" and direction=="enter" then
       enableYellow()
-      fillMap(74,6,".")
+      fillMap(85,6,".")
 
       unshifthelp()
       pushhelp("You unlocked player 3!")
    end
 
-   local yx=55
-   local yy=23
-   if mapchar == "y" then
-      if direction=="enter" then
-         fillMap(yx,yy,".")
-      else
-         fillMap(yx,yy,"#")
-      end
-   end
-   
 end
 
 
