@@ -86,6 +86,7 @@ function labyrinth:enter(oldstate, level)
    darkeneralpha = 200
    stepinterval = 0.05
    
+   highlightcircle = 0
    levelhelp = {}
    levelhelpalpha = 0
    levelhelpblocks = true
