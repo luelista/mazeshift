@@ -88,6 +88,7 @@ function labyrinth:enter(oldstate, level)
    
    levelhelp = {}
    levelhelpalpha = 0
+   levelhelpblocks = true
    
    resetPlayers()
 
@@ -104,7 +105,7 @@ end
 
 function pushhelp(txt)
    table.insert(levelhelp, txt)
-   labyrinth.stopgame = true
+   if levelhelpblocks then labyrinth.stopgame = true end
 end
 
 function lvlimg(nam)
@@ -300,6 +301,7 @@ function drawLevelhelp()
    local hidemsg = "press  to hide message"
    
    love.graphics.setColor(255,255,0,100)
+   if levelhelpblink then love.graphics.setColor(255,255,0,255) end
    love.graphics.rectangle("fill", 20, lhtop-20, canvasWidth-40, 110)
    
    love.graphics.setColor(0,0,0,255)
@@ -518,9 +520,13 @@ function labyrinth:keypressed(key)
       elseif labyrinth.state == "win" then labyrinth:enter("labyrinth",labyrinth.current_level + 1) end
       return
    end
-   if #levelhelp > 0 and key ~= "b" then levelhelpblink = true  setTimeout(function() levelhelpblink = false end , 0.2) end
+   if #levelhelp > 0 and levelhelpblocks and key ~= "space" and key ~= "b" then 
+      levelhelpblink = true  setTimeout(function() levelhelpblink = false end , 0.2) 
+   end
    
-   if key == " " then --space
+   if #levelhelp > 0 and ((key == "b") or (levelhelpblocks and key == " ")) then
+      if #levelhelp > 0 then table.remove(levelhelp, 1)  if #levelhelp == 0 and levelhelpblocks then labyrinth.stopgame = false end   end
+   elseif key == " " then --space
       CP = CP + 1
       if CP > #players then CP = 1 end
    elseif key == "1" then
@@ -535,8 +541,6 @@ function labyrinth:keypressed(key)
       CP = 5
    elseif key == "r" then
       labyrinth:enter()
-   elseif key == "b" then
-      if #levelhelp > 0 then table.remove(levelhelp, 1)  if #levelhelp == 0 then labyrinth.stopgame = false end   end
    elseif key == "up" or key == "down" or key == "left" or key == "right" then
       timerinterval = stepinterval
    elseif key == "escape" then
