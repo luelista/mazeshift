@@ -1,6 +1,7 @@
 -- -*- compile-command: "\"c:/Program Files/LOVE/love.exe\" ."; -*-
 
 mainmenu = {}
+levelsPerLine=5
 
 fntTitle = love.graphics.newFont("fonts/PrintChar21.ttf", 30)
 
@@ -35,12 +36,12 @@ function mainmenu:enter()
 
   local x,ysizeX
     for y=0,2-1,1 do
-  for x=0,9-1,1 do
-      str=(y*9)+x+1
+  for x=0,levelsPerLine-1,1 do
+      str=(y*levelsPerLine)+x+1
       addMenuElement(str,
-        fromCenter(str)+((x-4)*80),
+        fromCenter(str)+((x-math.floor(levelsPerLine/2))*80),
         180+(y*40),
-        fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,(y*9)+x+1)
+        fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,(y*levelsPerLine)+x+1)
     end
   end
 
@@ -130,10 +131,10 @@ function mainmenu:keypressed(key)
       local h = menuElement[menuElementActive]
       self:onmenuevent(h)
    elseif key == "down" then
-      menuElementActive = menuElementActive + 9
+      menuElementActive = menuElementActive + levelsPerLine
       if menuElementActive > #menuElement then menuElementActive = #menuElement end
    elseif key == "up" then
-      menuElementActive = menuElementActive - 9
+      menuElementActive = menuElementActive - levelsPerLine
       if menuElementActive < 1 then menuElementActive = 1 end
    elseif key == "left" then
       menuElementActive = menuElementActive - 1

@@ -1,55 +1,53 @@
-####################################################################################################
-#               ##########################################                                         #
-#               #                                                                                  #
-#               #                                                                                  #
-#     t         #                                                                                  #
-#               #                                                 ##                               #
-#               #                                                 ##                               #
-#               #                                                 ##                               #
-#               #                                                 ##                               #
-#     ##        #                                                 ##                               #
-#     ##           ##########   #                    r            ##                               #
-#     ##        #               #                                 ##                               #
-#     ##        #               #                                ##                                #
-#     ##        #               #                               ##                                 #
-#     ##        #               #                               ##                                 #
-#     ##        #               #                               ##                                 #
-#     ##        #        #      #                               ##                                 #
-#     ##        #        #      #                               ##   y                             #
-#     ##        #        #      #                               ##                                 #
-#     ##        #        #####RR#####################           ##                                 #
-#     ##        #        #####RR#####################           ##                                 #
-#     ##   r    #        #         B                    r       ##                                 #
-#     ##        #        #         B                            ##                                 #
-#     ##        #        #         B                            ##                                 #
-#     ##           #     #   ##################                 ##                                 #
-#     ##           #     #                    #                 ##                                 #
-#     ##           #     #                    #                 ##                                 #
-#     ##           #     #                    #                 ##                                 #
-#     ###########  #     #################    #                 ##                                 #
-#     ###########  #              Y           #                 ##                                 #
-#     ##           #              Y           #                 ##                                 #
-#     ##           #              Y           #                 ##                                 #
-#     ##           #              Y           #                 ##                                 #
-#     ##           #              Y           #                 ##                                 #
-#     ##           ####################       #                 ##                                 #
-#     ##    y       BB                #       #                 ##                                 #
-#     ##            BB     b          #       ##                ##                                 #
-#     ##            BB                #       ##                ##                                 #
-#     ##            BB                #        ##               ##                                 #
-#     ##        ###################   #         ##              ##                                 #
-#     ##        #                 #   #   b  r   ##            ##                                  #
-#     ##        #                 # c #          ##           ##                                   #
-#     ##        #                 #   #          ##          ##       b                            #
-#     ##        #       c         #################         ##                                     #
-#               #                               R          ##                                      #
-#        y      #                               R                                                  #
-#               #                               R                                                  #
-#               #                               R                                                  #
-#               #                               R                                                  #
-#               #                               R                                                  #
-#               #                               R                                                  #
-#               #                               R                                                  #
-###########################################################################                        #
-###########################################################################                        #
-####################################################################################################
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+Z                                                                                                    Z
+Z  ZZZZZZZZZ                                                                                         Z
+Z  Z       ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ                      Z
+Z  Z                                                                     FF    Z                     Z
+Z  Z                                                                    FF      Z                    Z
+Z  Z       ZZZZZZZZZZZZZZZZZZZZZ      .      ZZZZZZZZZZZZZZZZZZZZZ    ZFF   t    Z                   Z
+Z  ZZZZZZZZZ                   Z      .      Z                   Z    ZZ         Z                   Z
+Z                              Z    . . .    Z     ZZZZZZZZZZZ   Z    Z Z       Z                    Z
+Z                              Z     ...     Z     Z    y    Z   Z    Z  Z     Z                     Z
+Z                              Z      .      Z     Z         Z   Z    Z   ZZZZZ                      Z
+Z                              Z             Z     ZZZZZRRRRZZ   Zj j Z                              Z
+Z                              ZiiiiiiiiiiiiiZ         Z    ZZZZZZ    Z                              Z
+Z                           ZZZ               ZZZ      Z              Z                              Z
+Z                         ZZ                     ZZ    Z              Z                              Z
+Z                        Z                         Z   ZZZZZZZZZZZ    Z                              Z
+Z                       Z               Z           Z            ZYYYYZ                              Z
+Z                      Z               ZZZ           Z          Z      Z                             Z
+Z                     Z               ZZ ZZ           Z        Z        Z                            Z
+Z                     Z              ZZ   ZZ          Z        Z  c c   Z                            Z
+Z                    Z              ZZ     ZZ          Z        Z      Z                             Z
+Z                    Z             ZZ   s   ZZ         Z         ZZZZZZ                              Z
+Z                    Z            ZZ         ZZ        Z                                             Z
+Z                     Z           ZZZZZZZZZZZZZ       Z                                              Z
+Z                     Z                               Z                                              Z
+Z                      Z                             Z                                               Z
+Z                       Z                x          Z                                                Z
+Z                        Z                         Z                                                 Z
+Z                         ZZ                     ZZ                                                  Z
+Z                           ZZZ               ZZZ                                                    Z
+Z                              ZZZZZZZZZZZZZZZ                                                       Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+Z                                                                                                    Z
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
