@@ -296,19 +296,25 @@ function setHugeoverlay(text, text2, timeout)
 end
 
 function drawLevelhelp()
+   local lhtop, lhleft = canvasHeight-fntTitle:getHeight(levelhelp[1])-120, (canvasWidth-fntTitle:getWidth(levelhelp[1]))/2
+   local hidemsg = "press  to hide message"
+   
+   love.graphics.setColor(255,255,0,100)
+   love.graphics.rectangle("fill", 20, lhtop-20, canvasWidth-40, 110)
+   
    love.graphics.setColor(0,0,0,255)
    love.graphics.setFont(fntTitle)
-   love.graphics.print(levelhelp[1], (canvasWidth-fntTitle:getWidth(levelhelp[1]))/2, canvasHeight-130)
+   love.graphics.print(levelhelp[1], lhleft, lhtop)
    love.graphics.setFont(fntDefault)
-   love.graphics.print("press  to hide message", canvasWidth-340, canvasHeight-80)
+   love.graphics.print(hidemsg, canvasWidth-340, canvasHeight-80)
    
    love.graphics.setColor(255,255,255,255)
    if levelhelpblink then love.graphics.setColor(255,0,0,255) end
 
    love.graphics.setFont(fntTitle)
-   love.graphics.print(levelhelp[1], (canvasWidth-fntTitle:getWidth(levelhelp[1]))/2+2, canvasHeight-130+2)
+   love.graphics.print(levelhelp[1], lhleft-2, lhtop-2)
    love.graphics.setFont(fntDefault)
-   love.graphics.print("press  to hide message", canvasWidth-340+2, canvasHeight-80+2)
+   love.graphics.print(hidemsg, canvasWidth-340-2, canvasHeight-80-2)
 end
 
 function playerDied(msg)
