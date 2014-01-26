@@ -39,7 +39,7 @@ function mainmenu:enter()
   for x=0,levelsPerLine-1,1 do
       str=(y*levelsPerLine)+x+1
       addMenuElement(str,
-        fromCenter(str)+((x-(levelsPerLine/2))*80),
+        fromCenter(str)+((x-(levelsPerLine/2))*80)+40,
         180+(y*40),
         fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,(y*levelsPerLine)+x+1)
     end
