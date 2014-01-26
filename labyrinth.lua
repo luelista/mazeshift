@@ -232,7 +232,7 @@ function labyrinth:draw()
    love.graphics.draw(mapcanvas)
 
    for i = 1, #players do
-      local pl = players[i]          if p.enabled then
+      local pl = players[i]          if pl.enabled then
       if not labyrinth.show_map then love.graphics.setStencil(pl.stencil) end
       love.graphics.draw(pl.objectcanvas)
       love.graphics.setStencil()
@@ -243,7 +243,7 @@ function labyrinth:draw()
    end
 
    for i = 1, #players do
-      local pl = players[i]           if p.enabled then
+      local pl = players[i]           if pl.enabled then
       love.graphics.push()
       --
       love.graphics.translate((1+pl.tx)*ScaleX, (1+pl.ty)*ScaleY)
