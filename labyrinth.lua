@@ -109,6 +109,12 @@ function pushhelp(txt)
    if levelhelpblocks then labyrinth.stopgame = true end
 end
 
+function unshifthelp()
+   if #levelhelp > 0 then
+      table.remove(levelhelp, 1)  if #levelhelp == 0 and levelhelpblocks then labyrinth.stopgame = false end
+   end
+end
+
 function lvlimg(nam)
    return love.graphics.newImage(levelFolder..nam..".png")
 end
@@ -539,7 +545,7 @@ function labyrinth:keypressed(key)
    end
    
    if #levelhelp > 0 and ((key == "b") or (levelhelpblocks and key == " ")) then
-      if #levelhelp > 0 then table.remove(levelhelp, 1)  if #levelhelp == 0 and levelhelpblocks then labyrinth.stopgame = false end   end
+      unshifthelp()
    elseif key == " " then --space
       CP = CP + 1
       if CP > #players then CP = 1 end
