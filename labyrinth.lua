@@ -34,9 +34,13 @@ function labyrinth:enter(oldstate, level)
    imgTrigger = love.graphics.newImage("images/trigger.png")
    imgLife = love.graphics.newImage("images/life.png")
    imgViewangle = love.graphics.newImage("images/viewangle.png")
+   imgViewangle2 = love.graphics.newImage("images/lightener.png")
    
    sndCredit = love.audio.newSource("sound/square-sweep-up.wav", "static")
    sndEpicWin = love.audio.newSource("sound/square-fanfare.wav", "static")
+   sndKilled = love.audio.newSource("sound/square-sweep-down.wav", "static")
+   sndGameOver = love.audio.newSource("sound/square-scale-down.wav", "static")
+
    
    if (love.filesystem.exists(levelFolder.."bg.png")) then
       levelBg=love.graphics.newImage(levelFolder.."bg.png")
@@ -50,15 +54,15 @@ function labyrinth:enter(oldstate, level)
    ScaleX = 10
    ScaleY = 10
    default_players = {
-      red = { player = "r", speed = 50,
+      red = { player = "r", speed = 50, enabled = true,
         form = {0, 0, 20, 0, 20, 20, 0, 20},
         color = {200, 50, 50}, objectcanvas = love.graphics.newCanvas() },
 
-      yellow = { player = "y", speed = 50,
+      yellow = { player = "y", speed = 50, enabled = true,
         form = {7,0,   14,0,   21,10,   14,20,   7,20,   0,10},
-        color = {200, 250, 50}, objectcanvas = love.graphics.newCanvas() },
+        color = {10, 250, 50}, objectcanvas = love.graphics.newCanvas() },
 
-      blue = { player = "b", speed = 50,
+      blue = { player = "b", speed = 50, enabled = true,
         form = {0, 0, 0, 20, 20, 10},
         color = {50, 50, 250}, objectcanvas = love.graphics.newCanvas() }
    }
@@ -79,7 +83,7 @@ function labyrinth:enter(oldstate, level)
       mapScript={}
    end
 
-   darkeneralpha = 150
+   darkeneralpha = 200
    stepinterval = 0.05
    
    levelhelp = {}
@@ -144,10 +148,10 @@ function refreshDarkener()
    love.graphics.setColor(0, 0, 0, darkeneralpha)
    love.graphics.rectangle("fill", 0, 0, 1200, 600)
    love.graphics.setBlendMode('multiplicative')
+   love.graphics.setColor(255,255,255,255)
    for pl = 1, #players do
-      love.graphics.setColor(255,255,255,255)
       --love.graphics.circle("fill", players[pl].x, players[pl].y, 100)
-      local p = players[pl]
+      local p = players[pl]            if not p.enabled then next end
       local px = (p.tx+1-p.directionvector[1])*ScaleX
       local py = (p.ty+1-p.directionvector[2])*ScaleY
       --love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
@@ -155,6 +159,12 @@ function refreshDarkener()
       p.stencil = function()
          love.graphics.arc("fill", px, py, 220, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
       end
+   end
+   love.graphics.setBlendMode('alpha')
+   for pl = 1, #players do     
+      local p = players[pl]        if not p.enabled then next end
+      love.graphics.setColor(p.color[1],p.color[2],p.color[3],255)
+      love.graphics.draw(imgViewangle2, p.tx*ScaleX+ScaleX, p.ty*ScaleY,  (p.direction-0.25)*math.pi, 1, 1, 30, 30)
    end
    love.graphics.setCanvas()
    love.graphics.setBlendMode('alpha')
@@ -221,7 +231,7 @@ function labyrinth:draw()
    love.graphics.draw(mapcanvas)
 
    for i = 1, #players do
-      local pl = players[i]
+      local pl = players[i]          if not p.enabled then next end
       if not labyrinth.show_map then love.graphics.setStencil(pl.stencil) end
       love.graphics.draw(pl.objectcanvas)
       love.graphics.setStencil()
@@ -232,7 +242,7 @@ function labyrinth:draw()
    end
 
    for i = 1, #players do
-      local pl = players[i]
+      local pl = players[i]           if not p.enabled then next end
       love.graphics.push()
       --
       love.graphics.translate((1+pl.tx)*ScaleX, (1+pl.ty)*ScaleY)
@@ -292,11 +302,12 @@ function drawLevelhelp()
    love.graphics.print("press  to hide message", canvasWidth-340, canvasHeight-80)
    
    love.graphics.setColor(255,255,255,255)
+   if levelhelpblink then love.graphics.setColor(255,0,0,255) end
+
    love.graphics.setFont(fntTitle)
    love.graphics.print(levelhelp[1], (canvasWidth-fntTitle:getWidth(levelhelp[1]))/2+2, canvasHeight-130+2)
    love.graphics.setFont(fntDefault)
    love.graphics.print("press  to hide message", canvasWidth-340+2, canvasHeight-80+2)
-   
 end
 
 function playerDied(msg)
@@ -307,9 +318,11 @@ function playerDied(msg)
       local pl = CP
       labyrinth.stopgame = true
       setTimeout(function() resetPlayer(pl) labyrinth.stopgame = false end, 1.5)
+      sndBackgroundmusic:pause()    sndKilled:play()
    else
       setHugeoverlay("GAME OVER", "press SPACE to try again")
       labyrinth.stopgame = true  labyrinth.state = "dead"  labyrinth.credits = 100
+      sndBackgroundmusic:pause()    sndGameOver:play()
    end
 end
 
@@ -498,6 +511,7 @@ function labyrinth:keypressed(key)
       elseif labyrinth.state == "win" then labyrinth:enter("labyrinth",labyrinth.current_level + 1) end
       return
    end
+   if #levelhelp > 0 and key ~= "b" then levelhelpblink = true  setTimeout(function() levelhelpblink = false end , 0.2) end
    
    if key == " " then --space
       CP = CP + 1

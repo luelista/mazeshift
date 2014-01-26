@@ -57,8 +57,8 @@ function mainmenu_old:update(dt)
    mainmenu_old.menu:update(dt)
 end
 
-function mainmenu_old:mousepressed(x, y, button)
-   mainmenu_old.menu:mousepressed(x, y, button)
+function mainmenu_old:mousereleased(x, y, button)
+   mainmenu_old.menu:mousereleased(x, y, button)
 end
 
 function mainmenu_old:keypressed(key)
