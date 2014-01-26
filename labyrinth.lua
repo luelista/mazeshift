@@ -196,9 +196,15 @@ function refreshMap()
          elseif map[y][x] == "c" then
             love.graphics.setColor(255,255,255)
             love.graphics.draw(imgCherry, x * ScaleX, y * ScaleY)
-         elseif map[y][x] == "R" or map[y][x] == "Y" or map[y][x] == "B" then
-            love.graphics.setColor(111,111,111)
-            love.graphics.rectangle("fill", (x) * ScaleX, (y) * ScaleY, ScaleX, ScaleY)
+         elseif string.match(map[y][x], "[A-Z]") then
+            local img = mapScript.imagemap[map[y][x]]
+            if img ~= nil then 
+               love.graphics.setColor(255,255,255)
+               love.graphics.draw(img[1], (x) * ScaleX, (y) * ScaleY)
+            else
+               love.graphics.setColor(111,111,111)
+               love.graphics.rectangle("fill", (x) * ScaleX, (y) * ScaleY, ScaleX, ScaleY)
+            end
             for i = 1, #players do if map[y][x] == players[i].player:upper() then
                   love.graphics.setCanvas(players[i].objectcanvas) love.graphics.setColor(players[i].color)
                   love.graphics.rectangle("fill", (x) * ScaleX+1, (y) * ScaleY+1, ScaleX-2, ScaleY-2)
@@ -265,6 +271,13 @@ function labyrinth:draw()
    
    if #levelhelp > 0 then
       drawLevelhelp()
+   end
+
+   if highlightcircle > 0 then
+      love.graphics.setColor(255,255,0,255)
+      love.graphics.setLineWidth(3)
+      love.graphics.circle("line", highlightx, highlighty, highlightcircle)
+      love.graphics.setLineWidth(1)
    end
    
    printInfobar()
