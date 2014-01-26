@@ -89,13 +89,14 @@ function labyrinth:enter(oldstate, level)
    levelhelp = {}
    levelhelpalpha = 0
    
+   resetPlayers()
+
    if (mapScript.onLoad~=nil) then
       mapScript:onLoad()
    end
    
    print("stepinterval:",stepinterval)
    
-   resetPlayers()
    refreshDarkener()
    refreshMap()
 end
@@ -151,7 +152,7 @@ function refreshDarkener()
    love.graphics.setColor(255,255,255,255)
    for pl = 1, #players do
       --love.graphics.circle("fill", players[pl].x, players[pl].y, 100)
-      local p = players[pl]            if not p.enabled then next end
+      local p = players[pl]            if p.enabled then 
       local px = (p.tx+1-p.directionvector[1])*ScaleX
       local py = (p.ty+1-p.directionvector[2])*ScaleY
       --love.graphics.arc("fill", px, py, 140, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
@@ -159,13 +160,13 @@ function refreshDarkener()
       p.stencil = function()
          love.graphics.arc("fill", px, py, 220, (p.direction-0.25)*math.pi, (p.direction+0.25)*math.pi)
       end
-   end
+   end end
    love.graphics.setBlendMode('alpha')
    for pl = 1, #players do     
-      local p = players[pl]        if not p.enabled then next end
+      local p = players[pl]        if p.enabled then
       love.graphics.setColor(p.color[1],p.color[2],p.color[3],255)
       love.graphics.draw(imgViewangle2, p.tx*ScaleX+ScaleX, p.ty*ScaleY,  (p.direction-0.25)*math.pi, 1, 1, 30, 30)
-   end
+   end end
    love.graphics.setCanvas()
    love.graphics.setBlendMode('alpha')
 end
@@ -231,18 +232,18 @@ function labyrinth:draw()
    love.graphics.draw(mapcanvas)
 
    for i = 1, #players do
-      local pl = players[i]          if not p.enabled then next end
+      local pl = players[i]          if p.enabled then
       if not labyrinth.show_map then love.graphics.setStencil(pl.stencil) end
       love.graphics.draw(pl.objectcanvas)
       love.graphics.setStencil()
-   end
+   end end
    
    if not labyrinth.show_map then
       love.graphics.draw(darkener)
    end
 
    for i = 1, #players do
-      local pl = players[i]           if not p.enabled then next end
+      local pl = players[i]           if p.enabled then
       love.graphics.push()
       --
       love.graphics.translate((1+pl.tx)*ScaleX, (1+pl.ty)*ScaleY)
@@ -255,7 +256,7 @@ function labyrinth:draw()
          love.graphics.polygon("line", pl.form)
       end
       love.graphics.pop()
-   end
+   end end
    
    if hugeoverlay ~= "" then
       drawHugeoverlay()
