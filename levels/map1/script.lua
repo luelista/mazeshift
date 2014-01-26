@@ -2,6 +2,11 @@ local maphandler = {}
 
 function maphandler:onLoad()
    darkeneralpha = 220
+   
+   pushhelp("Press SPACE to switch players")
+   pushhelp("Collect stars to get credits or superpowers")
+   pushhelp("Collect all the cherries to win the level")
+   pushhelp("Don't run into the skulls, they'll kill you")
 end
 
 function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
