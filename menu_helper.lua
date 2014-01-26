@@ -48,7 +48,7 @@ return {
          return 0
       end,
 
-      mousepressed = function(self, x, y, button)
+      mousereleased = function(self, x, y, button)
          if button == "l" then
             local menuitem = self:getMenuByYPos(y)
             if menuitem ~= 0 then self.menuitems[self.curmenuitem]:a(self.menuitems[self.curmenuitem]) end

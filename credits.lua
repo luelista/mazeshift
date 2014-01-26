@@ -32,8 +32,8 @@ function credits:update(dt)
    credits.menu:update(dt)
 end
 
-function credits:mousepressed(x, y, button)
-   credits.menu:mousepressed(x, y, button)
+function credits:mousereleased(x, y, button)
+   credits.menu:mousereleased(x, y, button)
 end
 
 function credits:keypressed(key)

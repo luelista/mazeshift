@@ -37,8 +37,8 @@ function pause:update(dt)
    pause.menu:update(dt)
 end
 
-function pause:mousepressed(x, y, button)
-   pause.menu:mousepressed(x, y, button)
+function pause:mousereleased(x, y, button)
+   pause.menu:mousereleased(x, y, button)
 end
 
 function pause:keypressed(key)
