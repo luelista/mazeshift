@@ -81,7 +81,10 @@ function labyrinth:enter(oldstate, level)
 
    darkeneralpha = 150
    stepinterval = 0.05
-    
+   
+   levelhelp = {}
+   levelhelpalpha = 0
+   
    if (mapScript.onLoad~=nil) then
       mapScript:onLoad()
    end
@@ -91,6 +94,12 @@ function labyrinth:enter(oldstate, level)
    resetPlayers()
    refreshDarkener()
    refreshMap()
+end
+
+
+function pushhelp(txt)
+   table.insert(levelhelp, txt)
+   labyrinth.stopgame = true
 end
 
 function lvlimg(nam)
@@ -242,6 +251,10 @@ function labyrinth:draw()
       drawHugeoverlay()
    end
    
+   if #levelhelp > 0 then
+      drawLevelhelp()
+   end
+   
    printInfobar()
 end
 
@@ -269,6 +282,21 @@ function setHugeoverlay(text, text2, timeout)
       end
       setTimeout(hugeoverlaydecrease, timeout)
    end
+end
+
+function drawLevelhelp()
+   love.graphics.setColor(0,0,0,255)
+   love.graphics.setFont(fntTitle)
+   love.graphics.print(levelhelp[1], (canvasWidth-fntTitle:getWidth(levelhelp[1]))/2, canvasHeight-130)
+   love.graphics.setFont(fntDefault)
+   love.graphics.print("press  to hide message", canvasWidth-340, canvasHeight-80)
+   
+   love.graphics.setColor(255,255,255,255)
+   love.graphics.setFont(fntTitle)
+   love.graphics.print(levelhelp[1], (canvasWidth-fntTitle:getWidth(levelhelp[1]))/2+2, canvasHeight-130+2)
+   love.graphics.setFont(fntDefault)
+   love.graphics.print("press  to hide message", canvasWidth-340+2, canvasHeight-80+2)
+   
 end
 
 function playerDied(msg)
@@ -486,6 +514,8 @@ function labyrinth:keypressed(key)
       CP = 5
    elseif key == "r" then
       labyrinth:enter()
+   elseif key == "b" then
+      if #levelhelp > 0 then table.remove(levelhelp, 1)  if #levelhelp == 0 then labyrinth.stopgame = false end   end
    elseif key == "up" or key == "down" or key == "left" or key == "right" then
       timerinterval = stepinterval
    elseif key == "escape" then
