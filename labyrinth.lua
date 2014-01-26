@@ -424,7 +424,7 @@ function testMap(x, y, player)
    coll = { map[y][x], map[y+1][x], map[y+1][x+1], map[y][x+1] }
    res = " "
    for i = 1, #coll do
-      if coll[i] == "#" or (string.match(res, "[A-Z]") ~= nil and res:lower() ~= player.player) then return false end
+      if coll[i] == "#" or (string.match(coll[i], "[A-Z]") ~= nil and coll[i]:lower() ~= player.player) then return false end
    end
 
    return true
