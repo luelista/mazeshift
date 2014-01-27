@@ -1,0 +1,79 @@
+MAZE SHIFT
+
+This game is a contest entry in the Global Game Jam 2014 [1]. See the games project page [2] and the homepage [3] for more details. It was created in 48 hours by Max Weller and Moritz Willig.
+
+[1] http://globalgamejam.org/
+[2] http://globalgamejam.org/2014/games/mazeshift
+[3] http://max-weller.github.io/labyrinth/
+
+
+
+LEVEL EDITING
+
+Editing or creating levels is quite easy. The map of a level is defined by a plain text file containing an ASCII art representation of the map. If you happen to use the Emacs editor, the definitions for your init.el / .emacs provided in the section "EMACS HELPERS" should be useful.
+
+Maps must have the following directory structure:
+
+levels/
+        mapN/
+                map.txt                 <-- this contains the ASCII level map
+                script.lua              <-- this contains level specific behavior
+                bg.png                  <-- background image
+                some-image.png          <-- (*)
+
+(*) you can put any number of arbitrarily named image files in your map folder
+    and refer to it with lvlimg("some-image") from your script.lua
+
+If no background image (bg.png) exists, a black background is used. If bg.png is
+smaller/bigger than 1024x600 px, it will be repeated/cropped.
+
+The easiest was to create script.lua is to copy it from an existing level. It has 
+to be a Lua script file which returns an object of this structure:
+
+levelhandler:
+{
+        onLoad = function (self) ... end,
+        onCollision = function (self, direction, mapchar, player, x, y, playerIndex) ... end,
+        players = { ... },
+        imagemap = { ... }
+}
+
+The players and imagemap objects are mandatory (but imagemap may be an empty object). The
+event handler methods onLoad and onCollision are optional.
+
+
+
+EMACS HELPERS
+
+(defun lua/bindkey-recompile ()
+  "Bind <F5> to `recompile'."
+  (local-set-key (kbd "<f5>") 'recompile)
+  (linum-mode)
+)
+(add-hook 'lua-mode-hook 'lua/bindkey-recompile)
+
+(define-derived-mode asciimap-mode prog-mode "ASCIIMap"
+       "Major mode for editing ASCII game level maps.
+
+       Depending on what you're doing, you might want to enable some of the following minor modes, too:
+
+       - overwrite-mode (press insert key)
+       - artist-mode
+       
+       "
+       (setq buffer-face-mode-face '(:family "Print Char 21" :width ultra-expanded :height 70))
+       (buffer-face-mode)       
+   (setq-local comment-start "!! ")
+   (setq-local comment-start-skip "!!+\\s-*")
+)
+
+
+
+CHEAT CODES
+
+There are a few cheat codes in the game. To use them, press escape (pause menu) and then one of the following keys:
+
++ turn up the light
+- turn down the light
+# show the full map
+
