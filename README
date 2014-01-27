@@ -25,7 +25,7 @@ levels/
     and refer to it with lvlimg("some-image") from your script.lua
 
 If no background image (bg.png) exists, a black background is used. If bg.png is
-smaller/bigger than 1024x600 px, it will be repeated/cropped.
+smaller/bigger than 1024x600 px, it will be repeated/cropped. To find nice backgrounds, you could have a look around Subtle Patterns [4], where we got most of them.
 
 The easiest was to create script.lua is to copy it from an existing level. It has 
 to be a Lua script file which returns an object of this structure:
@@ -41,9 +41,13 @@ levelhandler:
 The players and imagemap objects are mandatory (but imagemap may be an empty object). The
 event handler methods onLoad and onCollision are optional.
 
+[4] http://www.subtlepatterns.com
+
 
 
 EMACS HELPERS
+
+Some helpers for users of GNU/Emacs editor [5].
 
 (defun lua/bindkey-recompile ()
   "Bind <F5> to `recompile'."
@@ -66,6 +70,8 @@ EMACS HELPERS
    (setq-local comment-start "!! ")
    (setq-local comment-start-skip "!!+\\s-*")
 )
+
+[5] http://www.gnu.org/software/emacs/
 
 
 
