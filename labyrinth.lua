@@ -71,11 +71,13 @@ function labyrinth:enter(oldstate, level)
    map = {}
    for line in love.filesystem.lines(levelFolder.."map.txt") do
       local mapline = {}
-      for charr in string.gmatch(line, ".") do
-         table.insert(mapline, charr)
-         if charr == "c" then cherrystotal = cherrystotal + 1 end
+      if string.sub(line, 1, 1) ~= "!" then
+         for charr in string.gmatch(line, ".") do
+            table.insert(mapline, charr)
+            if charr == "c" then cherrystotal = cherrystotal + 1 end
+         end
+         table.insert(map, mapline)
       end
-      table.insert(map, mapline)
    end
 
    mapScript=require(levelFolder.."script")
