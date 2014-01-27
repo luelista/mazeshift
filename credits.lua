@@ -4,7 +4,7 @@ credits = {}
 
 function credits:enter()
    credits.menu = MenuHelper:new()
-   credits.menu.menutop = 500
+   credits.menu.menutop = 520
    credits.menu:add("BACK", function() Gamestate.switch(mainmenu_old) end)
    credits.text = love.filesystem.read("CREDITS.txt")
 end
