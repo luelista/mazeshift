@@ -133,6 +133,7 @@ function resetPlayer(i)
    player.ty = mapScript.players[i].y 
 
    player.direction=0.5-math.atan2(player.directionvector[1],player.directionvector[2]) / math.pi
+   refreshDarkener()
 end
 
 function resetPlayers()

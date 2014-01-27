@@ -7,7 +7,7 @@ function pause:enter()
    pause.menu.menuheight = 30   pause.menu.menuthreshold = 10
    pause.menu:add("CONTINUE LEVEL", function() Gamestate.switch(labyrinth, nil) end)
    pause.menu:add("ESTART LEVEL", function() Gamestate.switch(labyrinth, labyrinth.current_level) end)
-   pause.menu:add("CHEAT: SHOW MAP", function() labyrinth.show_map = true end)
+   --pause.menu:add("CHEAT: SHOW MAP", function() labyrinth.show_map = true end)
    pause.menu:add("MUSIC: ON", toggleBackgroundMusic)
    pause.menu:add("FULLSCREEN: OFF", toggleFullscreen)
    pause.menu:add("ACK TO MAIN MENU", function() Gamestate.switch(mainmenu_old) end)
@@ -56,6 +56,15 @@ function pause:keypressed(key)
    end
    if key == "p" then
       Gamestate.switch(labyrinth, labyrinth.current_level-1)
+   end
+   if key == "#" then
+      labyrinth.show_map = not labyrinth.show_map   Gamestate.switch(labyrinth, nil)
+   end
+   if key == "+" then
+      darkeneralpha = darkeneralpha - 10   refreshDarkener()   Gamestate.switch(labyrinth, nil)
+   end
+   if key == "-" then
+      darkeneralpha = darkeneralpha + 10   refreshDarkener()   Gamestate.switch(labyrinth, nil)
    end
    if key == "escape" then
       Gamestate.switch(labyrinth, nil)

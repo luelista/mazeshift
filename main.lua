@@ -34,7 +34,8 @@ function love.load()
    sndBackgroundmusic = love.audio.newSource("sound/Silly Fun.mp3")
    sndBackgroundmusic:play()
    sndBackgroundmusic:setVolume(0.15)
-
+   sndBackgroundmusic:setLooping(true)
+   
    Gamestate.registerEvents()
    Gamestate.switch(mainmenu_old)
 end

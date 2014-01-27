@@ -3,7 +3,7 @@ local maphandler = {}
 function maphandler:onCollision(direction, mapchar, player, tx, ty, playerIndex)
    print("onCollision", direction, mapchar, player, tx, ty, playerIndex)
    
-   if mapchar == "k" and direction == "enter" then playerDied() end
+   if (mapchar == "k" or mapchar == "l") and direction == "enter" then playerDied() end
    
    if direction == "enter" and (mapchar == "r" or mapchar == "y" or mapchar == "b") and player.player == mapchar then
       sndBackgroundmusic:pause() sndCredit:play() labyrinth:credit(100)
@@ -35,7 +35,7 @@ maphandler.imagemap = {
 
 maphandler.players = {
    { player = "yellow", x = 5, y = 10, directionvector = {1,0} },
-   { player = "red", x = 5, y = 35, directionvector = {1,0} },
-   { player = "blue", x = 5, y = 27, directionvector = {1,0} }
+   { player = "blue", x = 5, y = 27, directionvector = {1,0} },
+   { player = "red", x = 5, y = 34, directionvector = {1,0} }
 }
 return maphandler
