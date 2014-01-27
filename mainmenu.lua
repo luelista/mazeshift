@@ -48,6 +48,8 @@ function mainmenu:enter()
   str=" Back"
   addMenuElement(str,canvasWidth-300,canvasHeight-30,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuQuit)
 
+  str="BONUS LEVELS"
+  addMenuElement(str,300,canvasHeight-30,fntDefault:getWidth(str),fntDefault:getHeight(str),fntDefault,menuLevel,999)
 end
 
 menuElement = {}

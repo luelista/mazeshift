@@ -17,11 +17,12 @@ function labyrinth:enter(oldstate, level)
    labyrinth.state = "play"
    
    levelFolder="levels/map" .. level .. "/"
-   if love.filesystem.exists(levelFolder.."map.txt") == false then
+   if love.filesystem.exists(levelFolder.."script.lua") == false then
       Gamestate.switch(most_epic_win)
       return
    end
    
+   keepkey = false
    playtimesec = 0
    cherrysfound = 0 cherrystotal = 0 livesremaining = 3
    hugeoverlay = ""
@@ -37,6 +38,7 @@ function labyrinth:enter(oldstate, level)
    imgViewangle2 = love.graphics.newImage("images/lightener.png")
    
    sndCredit = love.audio.newSource("sound/square-sweep-up.wav", "static")
+   sndCoin = love.audio.newSource("sound/coin1.wav", "static")
    sndEpicWin = love.audio.newSource("sound/square-fanfare.wav", "static")
    sndKilled = love.audio.newSource("sound/square-sweep-down.wav", "static")
    sndGameOver = love.audio.newSource("sound/square-scale-down.wav", "static")
@@ -67,19 +69,7 @@ function labyrinth:enter(oldstate, level)
         color = {50, 50, 250}, objectcanvas = love.graphics.newCanvas() }
    }
    
-   print("Hello, World!")
-   map = {}
-   for line in love.filesystem.lines(levelFolder.."map.txt") do
-      local mapline = {}
-      if string.sub(line, 1, 1) ~= "!" then
-         for charr in string.gmatch(line, ".") do
-            table.insert(mapline, charr)
-            if charr == "c" then cherrystotal = cherrystotal + 1 end
-         end
-         table.insert(map, mapline)
-      end
-   end
-
+   
    mapScript=require(levelFolder.."script")
    if (mapScript==nil) then
       mapScript={}
@@ -99,6 +89,18 @@ function labyrinth:enter(oldstate, level)
       mapScript:onLoad()
    end
    
+   map = {}
+   for line in love.filesystem.lines(levelFolder.."map.txt") do
+      local mapline = {}
+      if string.sub(line, 1, 1) ~= "!" then
+         for charr in string.gmatch(line, ".") do
+            table.insert(mapline, charr)
+            if charr == "c" then cherrystotal = cherrystotal + 1 end
+         end
+         table.insert(map, mapline)
+      end
+   end
+
    print("stepinterval:",stepinterval)
    
    refreshDarkener()
@@ -488,6 +490,7 @@ function movePlayer(idx, dX, dY)
 end
 
 timerinterval = 0
+keepdx = 0  keepdy = 0
 function labyrinth:update(dt)
    if labyrinth.stopgame then return end
    --print(dt)
@@ -509,9 +512,12 @@ function labyrinth:update(dt)
       if love.keyboard.isDown("right") or love.keyboard.isDown("d") then
          dx = dx + 1
       end
+      --if dx == 0 and keepkey then dx = keepdx end
+      --if dy == 0 and keepkey then dy = keepdy end
       if dx ~= 0 or dy ~= 0 then
-         movePlayer(CP, dx, 0)
-         movePlayer(CP, 0, dy)
+         local r
+         r=movePlayer(CP, dx, 0) --  if keepkey and r then keepdx = dx else dx = 0 keepdx=0 end
+         r=movePlayer(CP, 0, dy) --  if keepkey and r then keepdy = dy else dy = 0 keepdy=0 end
          local pl = players[CP]
          pl.direction = 0.5-(math.atan2(dx, dy)/math.pi)
          pl.directionvector = {dx,dy}
@@ -539,7 +545,13 @@ function labyrinth:keypressed(key)
    print(labyrinth.stopgame,livesremaining,labyrinth.current_level)
    if labyrinth.state ~= "play" and (key == " " or key == "return") then
       if labyrinth.state == "dead" then labyrinth:enter("labyrinth",labyrinth.current_level) 
-      elseif labyrinth.state == "win" then labyrinth:enter("labyrinth",labyrinth.current_level + 1) end
+      elseif labyrinth.state == "win" then 
+         if labyrinth.current_level == 999 then
+            labyrinth:enter("labyrinth","999") 
+         else
+            labyrinth:enter("labyrinth",labyrinth.current_level + 1) 
+         end
+      end
       return
    end
    if #levelhelp > 0 and levelhelpblocks and key ~= "space" and key ~= "b" then 
