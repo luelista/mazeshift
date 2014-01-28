@@ -5,8 +5,8 @@ fontFilename = "fonts/PrintChar21.ttf"
 backgroundMusic = true
 
 require "labyrinth"
+require "levelmenu"
 require "mainmenu"
-require "mainmenu_old"
 require "pause"
 require "credits"
 require "most_epic_win"
@@ -37,7 +37,7 @@ function love.load()
    sndBackgroundmusic:setLooping(true)
    
    Gamestate.registerEvents()
-   Gamestate.switch(mainmenu_old)
+   Gamestate.switch(mainmenu)
 end
 
 function love.update(dt)

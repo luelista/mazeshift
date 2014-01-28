@@ -5,7 +5,7 @@ credits = {}
 function credits:enter()
    credits.menu = MenuHelper:new()
    credits.menu.menutop = 520
-   credits.menu:add("BACK", function() Gamestate.switch(mainmenu_old) end)
+   credits.menu:add("BACK", function() Gamestate.switch(mainmenu) end)
    credits.text = love.filesystem.read("CREDITS.txt")
 end
 
@@ -38,7 +38,7 @@ end
 
 function credits:keypressed(key)
    if key == "escape" then
-      Gamestate.switch(mainmenu_old)
+      Gamestate.switch(mainmenu)
    end
    credits.menu:keypressed(key)
 end

@@ -17,6 +17,9 @@ function labyrinth:enter(oldstate, level)
    labyrinth.state = "play"
    
    levelFolder="levels/map" .. level .. "/"
+   
+   print ("Loading level "..levelFolder)
+   
    if love.filesystem.exists(levelFolder.."script.lua") == false then
       Gamestate.switch(most_epic_win)
       return

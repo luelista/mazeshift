@@ -10,7 +10,7 @@ function pause:enter()
    --pause.menu:add("CHEAT: SHOW MAP", function() labyrinth.show_map = true end)
    pause.menu:add("MUSIC: ON", toggleBackgroundMusic)
    pause.menu:add("FULLSCREEN: OFF", toggleFullscreen)
-   pause.menu:add("ACK TO MAIN MENU", function() Gamestate.switch(mainmenu_old) end)
+   pause.menu:add("ACK TO MAIN MENU", function() Gamestate.switch(mainmenu) end)
    pause.menu:add("UIT GAME", function() love.event.quit() end)
 end
 
@@ -46,7 +46,7 @@ function pause:keypressed(key)
       love.event.quit()
    end
    if key == "b" then
-      Gamestate.switch(mainmenu_old)
+      Gamestate.switch(mainmenu)
    end
    if key == "r" then
       Gamestate.switch(labyrinth, labyrinth.current_level)
